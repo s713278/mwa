@@ -4,10 +4,12 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import net.mwa.repository.FundRepository;
 import net.mwa.vo.FundVO;
 
+@Repository
 public class FundDaoImpl implements FundDao {
 
 	@Autowired

@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -15,6 +17,8 @@ import lombok.Data;
 @Table(name="Fund_DETAILS")
 public class FundVO {
 
+	@Id
+	@GeneratedValue
 	private Long id;
 	
 	@ApiModelProperty(name="fundName", example="CC Camera's Fund")
@@ -22,6 +26,7 @@ public class FundVO {
 	
 	private String description;
 	
+	@Column(name = "AMOUNT")
 	@ApiModelProperty(name="amount", example="1000")
 	private double amount;
 	
@@ -35,7 +40,7 @@ public class FundVO {
 	private Date expireDate;
 	
 	@Column(name = "TERMS_AND_CONDITAIONS")
-	private Clob termsAndConditaions;
+	private String termsAndConditaions;
 	
 	@Column(name = "IS_ACTIVE")
 	private boolean active;

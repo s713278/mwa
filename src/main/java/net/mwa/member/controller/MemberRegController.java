@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import net.mwa.service.MemberRegService;
 import net.mwa.vo.MemberReg;
 
-@Controller
+
+@Controller("member")
 public class MemberRegController {
 
 	private static Logger logger = Logger.getLogger(MemberRegController.class.getName());
@@ -26,12 +27,12 @@ public class MemberRegController {
 	}
 	
 	
-	@PostMapping("addMember")
+	@PostMapping("/addMember")
 	public @ResponseBody Long addMember(@RequestBody MemberReg memberReg){
 		return memberRegService.save(memberReg);
 	}
 	
-	@PostMapping("addMember")
+	@PostMapping("/updateMember")
 	public @ResponseBody Long updateMember(@RequestBody MemberReg memberReg){
 		return memberRegService.save(memberReg);
 	}
