@@ -1,4 +1,4 @@
-package net.mwa.member;
+package net.mwa.member.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,25 +12,13 @@ import net.mwa.service.MemberRegService;
 import net.mwa.vo.MemberReg;
 
 @Controller
+public class MemberRegController {
 
-public class HomeController {
-	
-	private static Logger logger = Logger.getLogger(HomeController.class.getName());
+	private static Logger logger = Logger.getLogger(MemberRegController.class.getName());
 
 	@Autowired
 	private MemberRegService memberRegService;
-
-	@GetMapping(value="/")
-	public String homePage(){
-		System.out.println("Loading Home Page");
-		return "index";
-	}
 	
-	@GetMapping(value="/home")
-	public String home(){
-		return "home";
-	}
-
 	@PostMapping(value="/sum")
 	public @ResponseBody int getTotal(int a ,int b){
 	
@@ -43,9 +31,13 @@ public class HomeController {
 		return memberRegService.save(memberReg);
 	}
 	
+	@PostMapping("addMember")
+	public @ResponseBody Long updateMember(@RequestBody MemberReg memberReg){
+		return memberRegService.save(memberReg);
+	}
+	
 	@GetMapping(value="/listAllMembers")
 	public  @ResponseBody Iterable<MemberReg> listAllMembers(){
 		return memberRegService.listAllMemebrs();
 	}
-
 }

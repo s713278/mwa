@@ -3,11 +3,10 @@
  */
 package net.mwa.dao;
 
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
-import net.mwa.repository.MemberRepository;
 import net.mwa.vo.MemberReg;
 
 /**
@@ -15,20 +14,17 @@ import net.mwa.vo.MemberReg;
  *
  */
 @Repository
-public class MemberRegDao {
+public interface MemberRegDao {
+	
+	public MemberReg save(final MemberReg info);
+	
+	public MemberReg update( final MemberReg info);
 
-	private static Logger logger = Logger.getLogger(MemberRegDao.class.getName());
+	public Iterable<MemberReg> findAll();
+
+	public MemberReg findAny(final Long memberId);
+
+	public MemberReg findByMobileNo(final Long memberId);
 	
-	@Autowired
-	private MemberRepository memberRepository;
-	
-	public MemberReg save(MemberReg info) {
-		MemberReg instituteInfo=	memberRepository.save(info);
-		logger.info("ID\t:"+instituteInfo.getId());
-		return instituteInfo;
-	}
-	
-	public Iterable<MemberReg> findAll(){
-		return memberRepository.findAll();
-	}
+	public List<MemberReg> findByFirstAndLastName(final String firstName,final String lastName);
 }

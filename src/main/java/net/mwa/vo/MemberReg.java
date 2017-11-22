@@ -9,10 +9,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 @Entity
 @Table(name = "MEMBER_REG")
 @DiscriminatorColumn(name="TYPE", discriminatorType=DiscriminatorType.STRING, length=20)
 @DiscriminatorValue("INDEPENDENT")
+@Data
 public class MemberReg {
 
 	@Id
@@ -22,112 +25,25 @@ public class MemberReg {
 	@Column(name="OWNER_FIRST_NAME")
 	private String ownerFirstName;
 	
+	@Column(name="OWNER_LAST_NAME")
 	private String ownerLastName;
 	
+	@Column(name="HOUSE_NO")
 	private String plotNo;
 	
+	@Column(name="EMAIL_ID")
 	private String emailID;
 	
+	@Column(name="MOBILE_NO")
 	private String mobileNo;
 	
+	@Column(name="NO_OF_FAMILIES")
 	private int noOfFamilies;
 	
-	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	/**
-	 * @return the ownerFirstName
-	 */
-	public String getOwnerFirstName() {
-		return ownerFirstName;
-	}
-
-	/**
-	 * @param ownerFirstName the ownerFirstName to set
-	 */
-	public void setOwnerFirstName(String ownerFirstName) {
-		this.ownerFirstName = ownerFirstName;
-	}
-
-	/**
-	 * @return the ownerLastName
-	 */
-	public String getOwnerLastName() {
-		return ownerLastName;
-	}
-
-	/**
-	 * @param ownerLastName the ownerLastName to set
-	 */
-	public void setOwnerLastName(String ownerLastName) {
-		this.ownerLastName = ownerLastName;
-	}
-
-	/**
-	 * @return the plotNo
-	 */
-	public String getPlotNo() {
-		return plotNo;
-	}
-
-	/**
-	 * @param plotNo the plotNo to set
-	 */
-	public void setPlotNo(String plotNo) {
-		this.plotNo = plotNo;
-	}
-
-	/**
-	 * @return the emailID
-	 */
-	public String getEmailID() {
-		return emailID;
-	}
-
-	/**
-	 * @param emailID the emailID to set
-	 */
-	public void setEmailID(String emailID) {
-		this.emailID = emailID;
-	}
-
-	/**
-	 * @return the mobileNo
-	 */
-	public String getMobileNo() {
-		return mobileNo;
-	}
-
-	/**
-	 * @param mobileNo the mobileNo to set
-	 */
-	public void setMobileNo(String mobileNo) {
-		this.mobileNo = mobileNo;
-	}
-
-	/**
-	 * @return the noOfFamilies
-	 */
-	public int getNoOfFamilies() {
-		return noOfFamilies;
-	}
-
-	/**
-	 * @param noOfFamilies the noOfFamilies to set
-	 */
-	public void setNoOfFamilies(int noOfFamilies) {
-		this.noOfFamilies = noOfFamilies;
-	}
-
+	@Column(name="IS_ACTIVE")
+	private boolean active;
+	
+	
+	private PaymentDetails paymentDetails;
+	
 }
