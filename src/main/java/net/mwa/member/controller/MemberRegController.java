@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import net.mwa.common.APICommonResponse;
 import net.mwa.service.MemberRegService;
 import net.mwa.vo.MemberReg;
 
@@ -28,12 +29,12 @@ public class MemberRegController {
 	
 	
 	@PostMapping("/addMember")
-	public @ResponseBody Long addMember(@RequestBody MemberReg memberReg){
+	public @ResponseBody APICommonResponse addMember(@RequestBody MemberReg memberReg){
 		return memberRegService.save(memberReg);
 	}
 	
 	@PostMapping("/updateMember")
-	public @ResponseBody Long updateMember(@RequestBody MemberReg memberReg){
+	public @ResponseBody APICommonResponse updateMember(@RequestBody MemberReg memberReg){
 		return memberRegService.save(memberReg);
 	}
 	

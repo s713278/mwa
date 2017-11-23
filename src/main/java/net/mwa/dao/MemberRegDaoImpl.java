@@ -13,7 +13,7 @@ import net.mwa.repository.MemberRepository;
 import net.mwa.vo.MemberReg;
 
 /**
- * @author Mahi
+ * @author skunta
  *
  */
 @Repository
@@ -39,8 +39,10 @@ public class MemberRegDaoImpl implements MemberRegDao{
 		return memberVO;
 	}
 	
-	public MemberReg findByMobileNo(Long memberId){
-		return null;
+	
+
+	public MemberReg  findByMobileNo(String mobileNo) {
+		return memberRepository.findByMobileNo(mobileNo);
 	}
 
 	public MemberReg update(MemberReg info) {
@@ -51,6 +53,10 @@ public class MemberRegDaoImpl implements MemberRegDao{
 	public List<MemberReg> findByFirstAndLastName(String firstName, String lastName) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public MemberReg  findByPlotNo(String plotNo) {
+		return memberRepository.findByPlotNo(plotNo);
 	}
 	
 	

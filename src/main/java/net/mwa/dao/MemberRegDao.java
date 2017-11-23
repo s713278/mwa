@@ -24,7 +24,9 @@ public interface MemberRegDao {
 
 	public MemberReg findAny(final Long memberId);
 
-	public MemberReg findByMobileNo(final Long memberId);
+	public MemberReg  findByMobileNo(final String mobileNo);
+	
+	public MemberReg  findByPlotNo(final String plotNo);
 	
 	public List<MemberReg> findByFirstAndLastName(final String firstName,final String lastName);
 }
