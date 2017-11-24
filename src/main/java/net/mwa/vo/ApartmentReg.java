@@ -7,7 +7,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "APARTMENT_REG")
 @DiscriminatorValue("APARTMENT")
-public class ApartmentReg extends MemberReg {
+public class ApartmentReg extends MemberDetailsVO {
 
 	private String aprtmentName;
 	

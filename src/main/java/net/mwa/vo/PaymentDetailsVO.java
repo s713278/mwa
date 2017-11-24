@@ -14,7 +14,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="PAYMENT_DETAILS")
-public class PaymentDetails implements Serializable {
+public class PaymentDetailsVO implements Serializable {
 
 	/**
 	 * 
@@ -39,6 +39,6 @@ public class PaymentDetails implements Serializable {
 	private FundVO fundVO;
 	
 	@Transient
-	private MemberReg member;
+	private MemberDetailsVO member;
 	
 }

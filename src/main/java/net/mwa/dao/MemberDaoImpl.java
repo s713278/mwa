@@ -10,52 +10,52 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.mwa.repository.MemberRepository;
-import net.mwa.vo.MemberReg;
+import net.mwa.vo.MemberDetailsVO;
 
 /**
  * @author skunta
  *
  */
 @Repository
-public class MemberRegDaoImpl implements MemberRegDao{
+public class MemberDaoImpl implements MemberDao{
 
-	private static Logger logger = Logger.getLogger(MemberRegDaoImpl.class.getName());
+	private static Logger logger = Logger.getLogger(MemberDaoImpl.class.getName());
 	
 	@Autowired
 	private MemberRepository memberRepository;
 	
-	public MemberReg save(MemberReg info) {
-		MemberReg memberVO=	memberRepository.save(info);
+	public MemberDetailsVO save(MemberDetailsVO info) {
+		MemberDetailsVO memberVO=	memberRepository.save(info);
 		logger.info("ID\t:"+memberVO.getId());
 		return memberVO;
 	}
 	
-	public Iterable<MemberReg> findAll(){
+	public Iterable<MemberDetailsVO> findAll(){
 		return memberRepository.findAll();
 	}
 	
-	public MemberReg findAny(Long memberId){
-		MemberReg memberVO=	memberRepository.findOne(memberId);
+	public MemberDetailsVO findAny(Long memberId){
+		MemberDetailsVO memberVO=	memberRepository.findOne(memberId);
 		return memberVO;
 	}
 	
 	
 
-	public MemberReg  findByMobileNo(String mobileNo) {
+	public MemberDetailsVO  findByMobileNo(String mobileNo) {
 		return memberRepository.findByMobileNo(mobileNo);
 	}
 
-	public MemberReg update(MemberReg info) {
+	public MemberDetailsVO update(MemberDetailsVO info) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<MemberReg> findByFirstAndLastName(String firstName, String lastName) {
+	public List<MemberDetailsVO> findByFirstAndLastName(String firstName, String lastName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public MemberReg  findByPlotNo(String plotNo) {
+	public MemberDetailsVO  findByPlotNo(String plotNo) {
 		return memberRepository.findByPlotNo(plotNo);
 	}
 	

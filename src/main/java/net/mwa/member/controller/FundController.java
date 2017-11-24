@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import net.mwa.service.FundService;
 import net.mwa.vo.FundVO;
 
-@Controller("fund")
+@Controller("api/v1/fund")
 public class FundController {
 
 	private static Logger logger = Logger.getLogger(FundController.class.getName());

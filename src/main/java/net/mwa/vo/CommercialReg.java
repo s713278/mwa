@@ -7,7 +7,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "COMMERCIAL_REG")
 @DiscriminatorValue("COMMERCIAL")
-public class CommercialReg extends MemberReg {
+public class CommercialReg extends MemberDetailsVO {
 
 	private String businessName;
 	

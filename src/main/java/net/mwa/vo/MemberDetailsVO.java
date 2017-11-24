@@ -21,7 +21,7 @@ import lombok.Data;
 @DiscriminatorColumn(name="TYPE", discriminatorType=DiscriminatorType.STRING, length=20)
 @DiscriminatorValue("INDEPENDENT")
 @Data
-public class MemberReg {
+public class MemberDetailsVO {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)

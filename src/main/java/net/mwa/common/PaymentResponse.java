@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class MemberRegResponse extends APICommonResponse {
+public class PaymentResponse extends APICommonResponse {
 
-	private Long memberId;
+	private Long referenceID;
 }
