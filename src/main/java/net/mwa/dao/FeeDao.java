@@ -15,7 +15,7 @@ import net.mwa.vo.FeeVO;
  *
  */
 @Repository
-public interface FundDao {
+public interface FeeDao {
 	
 	public FeeVO save(final FeeVO info);
 	

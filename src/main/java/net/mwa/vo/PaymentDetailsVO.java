@@ -36,7 +36,7 @@ public class PaymentDetailsVO implements Serializable {
 	private String note;
 	
 	@OneToOne
-	private FeeVO fundVO;
+	private FeeVO feeVO;
 	
 	@OneToOne
 	private MemberDetailsVO member;

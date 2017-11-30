@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 import net.mwa.common.APICommonResponse;
 import net.mwa.common.ErrorCodes;
 import net.mwa.common.MemberRegResponse;
-import net.mwa.common.PaymentRequest;
-import net.mwa.common.PaymentResponse;
 import net.mwa.common.SearchMemberRequest;
 import net.mwa.common.SearchMemberResponse;
-import net.mwa.dao.MemberDaoImpl;
+import net.mwa.dao.FeeDao;
+import net.mwa.dao.MemberDao;
+import net.mwa.dao.PaymentDao;
 import net.mwa.vo.MemberDetailsVO;
 
 /**
@@ -25,7 +25,13 @@ import net.mwa.vo.MemberDetailsVO;
 public class MemberService {
 
 	@Autowired
-	private MemberDaoImpl memberRegDao;
+	private MemberDao memberRegDao;
+	
+	@Autowired
+	private FeeDao feeDao;
+	
+	@Autowired
+	private PaymentDao paymentDao;
 
 	private static Logger logger = Logger.getLogger(MemberService.class.getName());
 
@@ -79,10 +85,6 @@ public class MemberService {
 		return response;
 	}
 
-	public PaymentResponse payAmount(PaymentRequest paymentRequest) {
-		PaymentResponse response = new PaymentResponse();
-		return response;
-	}
 
 	public Iterable<MemberDetailsVO> listAllMemebrs() {
 		return memberRegDao.findAll();

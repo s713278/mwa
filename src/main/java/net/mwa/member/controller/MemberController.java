@@ -51,9 +51,5 @@ public class MemberController {
 		return response;
 	}
 	
-	@GetMapping(value = "/payAmount")
-	public @ResponseBody APICommonResponse payAmount(@RequestBody PaymentRequest request) {
-		PaymentResponse response = (PaymentResponse) memberService.payAmount(request);
-		return response;
-	}
+	
 }

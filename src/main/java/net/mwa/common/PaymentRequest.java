@@ -7,5 +7,7 @@ public class PaymentRequest extends APICommonRequest{
 
 	private Long memberId;
 	
+	private Long feeId;
+	
 	private Double amount;
 }

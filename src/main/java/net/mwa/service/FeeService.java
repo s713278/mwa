@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import net.mwa.dao.FundDao;
+import net.mwa.dao.FeeDao;
 import net.mwa.vo.FeeVO;
 
 /**
@@ -16,12 +16,12 @@ import net.mwa.vo.FeeVO;
  *
  */
 @Service
-public class FundService {
+public class FeeService {
 
 	@Autowired
-	private FundDao fundDao;
+	private FeeDao fundDao;
 	
-	private static Logger logger = Logger.getLogger(FundService.class.getName());
+	private static Logger logger = Logger.getLogger(FeeService.class.getName());
 		
 	public Long save(FeeVO fundVO) {
 		FeeVO fundVO1=fundDao.save(fundVO);

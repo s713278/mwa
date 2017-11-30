@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import net.mwa.service.FundService;
+import net.mwa.service.FeeService;
 import net.mwa.vo.FeeVO;
 
-@Controller("api/v1/fund")
+@Controller("api/v1/fee")
 public class FundController {
 
 	private static Logger logger = Logger.getLogger(FundController.class.getName());
 
 	@Autowired
-	private FundService fundService ; 
+	private FeeService fundService ; 
 	
 	@PostMapping("/add")
 	public @ResponseBody Long addFund(@RequestBody FeeVO fundVO){

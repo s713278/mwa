@@ -10,7 +10,7 @@ import net.mwa.repository.FundRepository;
 import net.mwa.vo.FeeVO;
 
 @Repository
-public class FundDaoImpl implements FundDao {
+public class FundDaoImpl implements FeeDao {
 
 	@Autowired
 	private FundRepository fundRepository;
