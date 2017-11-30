@@ -1,6 +1,5 @@
 package net.mwa.vo;
 
-import java.sql.Clob;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -14,8 +13,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="Fund_DETAILS")
-public class FundVO {
+@Table(name="FEE_DETAILS")
+public class FeeVO {
 
 	@Id
 	@GeneratedValue
@@ -43,9 +42,13 @@ public class FundVO {
 	private String termsAndConditaions;
 	
 	@Column(name = "IS_ACTIVE")
-	private boolean active;
+	private boolean active=Boolean.TRUE;
 	
 	@Column(name = "BANK_DETAILS")
 	private String bankDetails;
+	
+	@Column(name = "IS_EXPIRED")
+	private boolean expired;
+	
 	
 }

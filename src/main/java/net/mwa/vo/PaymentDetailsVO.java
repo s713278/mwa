@@ -6,14 +6,14 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name="PAYMENT_DETAILS")
+@Table(name="MEMBER_PAYMENT_DETAILS")
 public class PaymentDetailsVO implements Serializable {
 
 	/**
@@ -35,10 +35,10 @@ public class PaymentDetailsVO implements Serializable {
 	
 	private String note;
 	
-	@Transient
-	private FundVO fundVO;
+	@OneToOne
+	private FeeVO fundVO;
 	
-	@Transient
+	@OneToOne
 	private MemberDetailsVO member;
 	
 }

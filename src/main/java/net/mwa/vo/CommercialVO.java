@@ -5,9 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "COMMERCIAL_REG")
+@Table(name = "COMMERCIAL_DETAILS")
 @DiscriminatorValue("COMMERCIAL")
-public class CommercialReg extends MemberDetailsVO {
+public class CommercialVO extends MemberDetailsVO {
 
 	private String businessName;
 	

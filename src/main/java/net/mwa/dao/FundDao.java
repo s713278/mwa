@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import net.mwa.vo.FundVO;
+import net.mwa.vo.FeeVO;
 
 /**
  * @author Mahi
@@ -17,15 +17,15 @@ import net.mwa.vo.FundVO;
 @Repository
 public interface FundDao {
 	
-	public FundVO save(final FundVO info);
+	public FeeVO save(final FeeVO info);
 	
-	public FundVO update( final FundVO info);
+	public FeeVO update( final FeeVO info);
 
-	public Iterable<FundVO> findAll();
+	public Iterable<FeeVO> findAll();
 
-	public FundVO findAny(final Long fundId);
+	public FeeVO findAny(final Long fundId);
 	
 	public void delete(final Long fundId);
 
-	public List<FundVO> listFundsInBrtnDates(final Date startDate,final String endDate);
+	public List<FeeVO> listFundsInBtnDates(final Date startDate,final String endDate);
 }

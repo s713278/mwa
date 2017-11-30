@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.mwa.repository.FundRepository;
-import net.mwa.vo.FundVO;
+import net.mwa.vo.FeeVO;
 
 @Repository
 public class FundDaoImpl implements FundDao {
@@ -16,20 +16,20 @@ public class FundDaoImpl implements FundDao {
 	private FundRepository fundRepository;
 	
 	
-	public FundVO save(FundVO info) {
+	public FeeVO save(FeeVO info) {
 		return fundRepository.save(info);
 	}
 
-	public FundVO update(FundVO info) {
+	public FeeVO update(FeeVO info) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Iterable<FundVO> findAll() {
+	public Iterable<FeeVO> findAll() {
 		return fundRepository.findAll();
 	}
 
-	public FundVO findAny(Long fundId) {
+	public FeeVO findAny(Long fundId) {
 		return fundRepository.findOne(fundId);
 	}
 
@@ -37,7 +37,7 @@ public class FundDaoImpl implements FundDao {
 		fundRepository.delete(fundId);;
 	}
 
-	public List<FundVO> listFundsInBrtnDates(Date startDate, String endDate) {
+	public List<FeeVO> listFundsInBtnDates(Date startDate, String endDate) {
 		return null;
 	}
 

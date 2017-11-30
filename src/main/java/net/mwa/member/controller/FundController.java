@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import net.mwa.service.FundService;
-import net.mwa.vo.FundVO;
+import net.mwa.vo.FeeVO;
 
 @Controller("api/v1/fund")
 public class FundController {
@@ -20,17 +20,17 @@ public class FundController {
 	private FundService fundService ; 
 	
 	@PostMapping("/add")
-	public @ResponseBody Long addFund(@RequestBody FundVO fundVO){
+	public @ResponseBody Long addFund(@RequestBody FeeVO fundVO){
 		return fundService.save(fundVO);
 	}
 	
 	@PostMapping("/update")
-	public @ResponseBody Long updateFund(@RequestBody FundVO fundVO){
+	public @ResponseBody Long updateFund(@RequestBody FeeVO fundVO){
 		return fundService.save(fundVO);
 	}
 	
 	@GetMapping(value="/list")
-	public  @ResponseBody Iterable<FundVO> listAllFunds(){
+	public  @ResponseBody Iterable<FeeVO> listAllFunds(){
 		return fundService.listAllFunds();
 	}
 }

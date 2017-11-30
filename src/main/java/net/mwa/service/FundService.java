@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import net.mwa.dao.FundDao;
-import net.mwa.vo.FundVO;
+import net.mwa.vo.FeeVO;
 
 /**
  * @author Mahi
@@ -23,13 +23,13 @@ public class FundService {
 	
 	private static Logger logger = Logger.getLogger(FundService.class.getName());
 		
-	public Long save(FundVO fundVO) {
-		FundVO fundVO1=fundDao.save(fundVO);
+	public Long save(FeeVO fundVO) {
+		FeeVO fundVO1=fundDao.save(fundVO);
 		logger.info("ID\t:"+fundVO1.getId());
 		return fundVO1.getId();
 	}
 	
-	public Iterable<FundVO> listAllFunds(){
+	public Iterable<FeeVO> listAllFunds(){
 		return fundDao.findAll();
 	}
 }
