@@ -1,5 +1,7 @@
 package net.mwa.member.controller;
 
+import javax.validation.Valid;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,7 +33,7 @@ public class MemberController {
 	}
 
 	@PostMapping("/addMember")
-	public @ResponseBody APICommonResponse addMember(@RequestBody MemberDetailsVO memberReg) {
+	public @ResponseBody APICommonResponse addMember(@Valid @RequestBody MemberDetailsVO memberReg) {
 		return memberService.save(memberReg);
 	}
 

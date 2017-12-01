@@ -12,12 +12,10 @@ public class PaymentDaoImpl implements PaymentDao {
 	@Autowired
 	private PaymentRepository paymentRepository ;
 	
-	@Override
-	public PaymentDetailsVO save(PaymentDetailsVO paymentDetailsVO) {
+	public PaymentDetailsVO save(final PaymentDetailsVO paymentDetailsVO) {
 		return paymentRepository.save(paymentDetailsVO);
 	}
 
-	@Override
 	public Iterable<PaymentDetailsVO> findAll() {
 		return paymentRepository.findAll();
 	}

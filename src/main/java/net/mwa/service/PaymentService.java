@@ -42,14 +42,14 @@ public class PaymentService {
 			response.setDeveloperMessage("No member fee details found with # "+feeId);
 			return response;
 		}
-		Double enteredAmount  = paymentRequest.getAmount();
+		double enteredAmount  = paymentRequest.getAmount();
 		if(enteredAmount<=0){
 			response.setSuccess(Boolean.FALSE);	
 			response.setUserMessage("Amount must be greater than zero");
 			response.setDeveloperMessage("Invalid amount is entered and entered amount is  "+enteredAmount);
 			return response;
 		}
-		Double dueAmount = feeVO.getAmount();
+		double dueAmount = feeVO.getAmount();
 		if(enteredAmount != dueAmount){
 			response.setSuccess(Boolean.FALSE);	
 			response.setUserMessage(enteredAmount+" is not matching with due amount :"+dueAmount+". Please correct it and try again");

@@ -1,5 +1,7 @@
 package net.mwa.member.controller;
 
+import javax.validation.Valid;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +22,7 @@ public class FundController {
 	private FeeService fundService ; 
 	
 	@PostMapping("/add")
-	public @ResponseBody Long addFund(@RequestBody FeeVO fundVO){
+	public @ResponseBody Long addFund(@Valid @RequestBody FeeVO fundVO){
 		return fundService.save(fundVO);
 	}
 	
