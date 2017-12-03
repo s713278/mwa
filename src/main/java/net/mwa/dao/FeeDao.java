@@ -28,4 +28,6 @@ public interface FeeDao {
 	public void delete(final Long fundId);
 
 	public List<FeeVO> listFundsInBtnDates(final Date startDate,final String endDate);
+	
+	public List<FeeVO> findByCategoryId(Long id);
 }

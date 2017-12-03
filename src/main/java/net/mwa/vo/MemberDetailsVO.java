@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,17 +24,19 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Entity
 @Table(name = "MEMBER_DETAILS")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name="TYPE", discriminatorType=DiscriminatorType.STRING, length=20)
 @DiscriminatorValue("INDEPENDENT")
 @Data
 @JsonIgnoreProperties(value = {"createdDate", "lastUpdate"}, allowGetters = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @EntityListeners(AuditingEntityListener.class)
 public class MemberDetailsVO {
 
@@ -52,7 +55,7 @@ public class MemberDetailsVO {
 	private String ownerLastName;
 	
 	@ApiModelProperty(name="plotNo",example="MIG-973/L")
-	@Column(name="HOUSE_NO")
+	@Column(name="PLOT_NO")
 	@NotBlank
 	private String plotNo;
 	
@@ -70,8 +73,10 @@ public class MemberDetailsVO {
 	private int noOfFamilies = 1;
 	
 	@Column(name="IS_ACTIVE")
-	private boolean active;
+	private short active=1;
 	
+	@OneToOne
+	private CategoryVO category;
 	
 	@Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

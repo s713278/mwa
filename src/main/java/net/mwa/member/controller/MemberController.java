@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import net.mwa.common.APICommonResponse;
-import net.mwa.common.PaymentRequest;
-import net.mwa.common.PaymentResponse;
 import net.mwa.common.SearchMemberRequest;
 import net.mwa.common.SearchMemberResponse;
 import net.mwa.service.MemberService;

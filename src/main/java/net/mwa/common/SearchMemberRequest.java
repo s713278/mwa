@@ -1,9 +1,12 @@
 package net.mwa.common;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SearchMemberRequest extends APICommonRequest{
 
 	@ApiModelProperty(name="memberId" ,example="120")

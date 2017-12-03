@@ -1,19 +1,12 @@
 package net.mwa.vo;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,41 +22,30 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="PAYMENT_DETAILS")
+@Table(name="CATEGORY_DETAILS")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"paidDate", "lastUpdate"}, allowGetters = true)
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name="TYPE", discriminatorType=DiscriminatorType.STRING, length=20)
+@JsonIgnoreProperties(value = {"createdDate", "lastUpdate"}, allowGetters = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public abstract class PaymentDetailsVO implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2909982706079178546L;
+public class CategoryVO {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.TABLE)
+	@GeneratedValue
 	private Long id;
 	
-	private double paidAmount;
+	private String code;
 	
-	private String note;
+	private String name;
+	
+	private String description;
 	
 	@Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-    private Date paidDate;
+    private Date createdDate;
 	
 	@Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date lastUpdate;
-	
-	@OneToOne
-	private FeeVO fee;
-	
-	@OneToOne
-	private MemberDetailsVO member;
 	
 }

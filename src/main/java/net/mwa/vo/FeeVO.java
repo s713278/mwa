@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -17,6 +18,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -26,6 +28,7 @@ import lombok.Data;
 @Table(name="FEE_DETAILS")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdDate", "lastUpdate"}, allowGetters = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class FeeVO {
 
 	@Id
@@ -61,7 +64,11 @@ public class FeeVO {
 	private String bankDetails;
 	
 	@Column(name = "IS_EXPIRED")
-	private boolean expired;
+	private boolean expired=false;
+	
+	@OneToOne
+	private CategoryVO category;
+	
 	
 	@Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

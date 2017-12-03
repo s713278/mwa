@@ -1,5 +1,7 @@
 package net.mwa.common;
 
+import java.util.Calendar;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -19,5 +21,7 @@ public class APICommonResponse {
 	private String userMessage;
 	
 	private String developerMessage;
+	
+	private Long timeStamp = Calendar.getInstance().getTimeInMillis();
 	
 }

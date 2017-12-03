@@ -8,5 +8,7 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PaymentResponse extends APICommonResponse {
 
-	private Long referenceID;
+	private String transactionId;
+	
+	private String receiptNo;
 }
