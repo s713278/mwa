@@ -30,7 +30,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import net.mwa.common.MemberShipType;
 
 @Entity
 @Table(name = "MEMBER_DETAILS")

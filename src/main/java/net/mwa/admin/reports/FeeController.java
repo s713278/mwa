@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import io.swagger.annotations.Api;
 import net.mwa.service.FeeService;
 import net.mwa.vo.FeeVO;
 
 @Controller("api/v1/fee")
+
+@Api(value="FeeController" ,description ="Operations pertaining to MWA fee")
 public class FeeController {
 
 	private static Logger logger = Logger.getLogger(FeeController.class.getName());
@@ -21,17 +24,17 @@ public class FeeController {
 	@Autowired
 	private FeeService fundService ; 
 	
-	@PostMapping("/add")
+	@PostMapping("/addFee")
 	public @ResponseBody Long addFund(@Valid @RequestBody FeeVO fundVO){
 		return fundService.save(fundVO);
 	}
 	
-	@PostMapping("/update")
+	@PostMapping("/updateFee")
 	public @ResponseBody Long updateFund(@RequestBody FeeVO fundVO){
 		return fundService.save(fundVO);
 	}
 	
-	@GetMapping(value="/list")
+	@GetMapping(value="/listAllFees")
 	public  @ResponseBody Iterable<FeeVO> listAllFunds(){
 		return fundService.listAllFunds();
 	}

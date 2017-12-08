@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import io.swagger.annotations.Api;
 import net.mwa.common.APICommonResponse;
 import net.mwa.common.SearchMemberRequest;
 import net.mwa.common.SearchMemberResponse;
@@ -17,6 +18,7 @@ import net.mwa.service.MemberService;
 import net.mwa.vo.MemberDetailsVO;
 
 @Controller("api/v1/member")
+@Api(value="MemberController",description="Operations pertaining to memeber services")
 public class MemberController {
 
 	private static Logger logger = Logger.getLogger(MemberController.class.getName());

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.mwa.common.APICommonResponse;
 import net.mwa.common.PaymentDueResponse;
@@ -16,6 +17,7 @@ import net.mwa.common.PaymentResponse;
 import net.mwa.service.PaymentService;
 
 @Controller("api/v1/payment")
+@Api(value="Operations pertaining to member payment services")
 public class PaymentController {
 
 	private static Logger logger = Logger.getLogger(PaymentController.class.getName());

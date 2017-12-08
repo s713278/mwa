@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.mwa.common.APICommonResponse;
 import net.mwa.common.PaymentHistoryResponse;
@@ -14,6 +15,7 @@ import net.mwa.service.PaymentService;
 import net.mwa.vo.PaymentDetailsVO;
 
 @RestController("api/v1/reports")
+@Api(value="ReportController",description="Operations pertaining to MWA reports")
 public class ReportController {
 
 	@Autowired
