@@ -18,7 +18,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import net.mwa.common.MemberShipType;
 
 @Data
 @Entity
@@ -32,6 +34,7 @@ public class CategoryVO {
 	@GeneratedValue
 	private Long id;
 	
+	@ApiModelProperty(name = "code", allowableValues = MemberShipType.Values.VALUES, value = MemberShipType.Values.INDEPENDENT)
 	private String code;
 	
 	private String name;

@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.DiscriminatorOptions;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -36,8 +37,9 @@ import net.mwa.common.MemberShipType;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name="TYPE", discriminatorType=DiscriminatorType.STRING, length=20)
 @DiscriminatorValue("INDEPENDENT")
+@DiscriminatorOptions(force=true)
 @Data
-@JsonIgnoreProperties(value = {"createdDate", "lastUpdate"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"createdDate", "lastUpdate"}, allowGetters = false)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @EntityListeners(AuditingEntityListener.class)
 public class MemberDetailsVO {

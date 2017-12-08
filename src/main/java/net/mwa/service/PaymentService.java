@@ -1,5 +1,6 @@
 package net.mwa.service;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -44,33 +45,54 @@ public class PaymentService {
 			return response;
 		}
 		Long feeId = paymentRequest.getFeeId();
-		FeeVO feeVO = feeDao.findAny(feeId);
-		if (feeId == null || feeVO == null) {
+		FeeVO actualFeeVO = feeDao.findAny(feeId);
+		if (feeId == null || actualFeeVO == null) {
 			response.setSuccess(Boolean.FALSE);
 			response.setUserMessage("Invalid fee id");
 			response.setDeveloperMessage("No member fee details found with # " + feeId);
 			return response;
 		}
 		double enteredAmount = paymentRequest.getAmount();
-		if (enteredAmount <= 0) {
+		if (enteredAmount <= 0 && enteredAmount <=10) {
 			response.setSuccess(Boolean.FALSE);
-			response.setUserMessage("Amount must be greater than zero");
+			response.setUserMessage("Minimum amount should be Rs 10");
 			response.setDeveloperMessage("Invalid amount is entered and entered amount is  " + enteredAmount);
 			return response;
 		}
-		double dueAmount = feeVO.getAmount();
-		if (enteredAmount != dueAmount) {
+		
+		//If any payments already made by member
+		List<PaymentDetailsVO> payments = paymentDao.findByFeeIdAndMemberId(feeId, memberId);
+		double paidAmount = 0;
+		if(payments!=null && payments.size()>0){
+			for(PaymentDetailsVO paymentDetailsVO : payments){
+				paidAmount += paymentDetailsVO.getPaidAmount();
+			}
+		}
+		//If amount is entered that than the due amount
+		double dueAmount = actualFeeVO.getAmount()-paidAmount;
+		if (enteredAmount > dueAmount) {
+			enteredAmount = dueAmount;
+		}
+		
+		if (dueAmount == 0) {
+			response.setSuccess(Boolean.FALSE);
+			response.setUserMessage("No dues pending..");			
+			String developerMessage = MessageFormat.format("No dues pending for the member #{0} and feeId #{1}", new Object[]{String.valueOf(memberId),feeId});
+			response.setDeveloperMessage(developerMessage);
+			return response;
+		}
+		/*if (enteredAmount < dueAmount) {
 			response.setSuccess(Boolean.FALSE);
 			response.setUserMessage(enteredAmount + " is not matching with due amount :" + dueAmount
 					+ ". Please correct it and try again");
 			response.setDeveloperMessage(enteredAmount + " is not matching with due amount :" + dueAmount
 					+ ". Please correct it and try again");
 			return response;
-		}
+		}*/
 		CashPaymentVO detailsVO = new CashPaymentVO();
 		detailsVO.setPaidAmount(enteredAmount);
 		detailsVO.setMember(memberDetailsVO);
-		detailsVO.setFee(feeVO);
+		detailsVO.setFee(actualFeeVO);
 		detailsVO = (CashPaymentVO) paymentDao.save(detailsVO);
 		response.setSuccess(Boolean.TRUE);
 		response.setTransactionId(String.valueOf(detailsVO.getId()));
@@ -115,6 +137,13 @@ public class PaymentService {
 		return response;
 	}
 
+	/**
+	 * <p>
+	 * 
+	 * </p>
+	 * @param memberID
+	 * @return
+	 */
 	public PaymentHistoryResponse getPaymentHistoryByMemberId(final Long memberID) {
 		PaymentHistoryResponse response = new PaymentHistoryResponse();
 		// final Long memberID = request.getMemberId();
@@ -124,6 +153,13 @@ public class PaymentService {
 		return response;
 	}
 
+	/**
+	 * <p>
+	 * 
+	 * </p>
+	 * @param feeID
+	 * @return
+	 */
 	public PaymentHistoryResponse getPaymentHistoryByFeeId(final Long feeID) {
 		PaymentHistoryResponse response = new PaymentHistoryResponse();
 		// final Long feeID = request.getFeeId();
@@ -132,4 +168,7 @@ public class PaymentService {
 		response.setPaymentHistory(result);
 		return response;
 	}
+	
+	
+	
 }

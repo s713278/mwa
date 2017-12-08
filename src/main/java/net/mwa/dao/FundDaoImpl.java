@@ -41,7 +41,6 @@ public class FundDaoImpl implements FeeDao {
 		return null;
 	}
 
-	@Override
 	public List<FeeVO> findByCategoryId(Long id) {
 		return fundRepository.findByCategoryId(id);
 	}

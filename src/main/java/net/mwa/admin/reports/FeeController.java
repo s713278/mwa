@@ -1,4 +1,4 @@
-package net.mwa.member.controller;
+package net.mwa.admin.reports;
 
 import javax.validation.Valid;
 
@@ -14,9 +14,9 @@ import net.mwa.service.FeeService;
 import net.mwa.vo.FeeVO;
 
 @Controller("api/v1/fee")
-public class FundController {
+public class FeeController {
 
-	private static Logger logger = Logger.getLogger(FundController.class.getName());
+	private static Logger logger = Logger.getLogger(FeeController.class.getName());
 
 	@Autowired
 	private FeeService fundService ; 

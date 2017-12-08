@@ -30,12 +30,12 @@ public class MemberController {
 		return a + b;
 	}
 
-	@PostMapping("/addMember")
+	@PostMapping("/add")
 	public @ResponseBody APICommonResponse addMember(@Valid @RequestBody MemberDetailsVO memberReg) {
 		return memberService.save(memberReg);
 	}
 
-	@PostMapping("/updateMember")
+	@PostMapping("/update")
 	public @ResponseBody APICommonResponse updateMember(@RequestBody MemberDetailsVO memberReg) {
 		return memberService.save(memberReg);
 	}

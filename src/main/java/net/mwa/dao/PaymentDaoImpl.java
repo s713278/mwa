@@ -14,7 +14,6 @@ public class PaymentDaoImpl implements PaymentDao {
 	@Autowired
 	private PaymentRepository paymentRepository ;
 
-	@Override
 	public PaymentDetailsVO save(final PaymentDetailsVO paymentDetailsVO) {
 		return paymentRepository.save(paymentDetailsVO);
 	}
@@ -28,10 +27,15 @@ public class PaymentDaoImpl implements PaymentDao {
 	public List<PaymentDetailsVO> findByMemberId(Long memberId) {
 		return paymentRepository.findByMemberId(memberId);
 	}
-
+	
 	@Override
 	public List<PaymentDetailsVO> findByFeeId(Long feeId) {
 		return paymentRepository.findByFeeId(feeId);
+	}
+
+	@Override
+	public List<PaymentDetailsVO> findByFeeIdAndMemberId(Long feeId, Long memberId) {
+		return paymentRepository.findByFeeIdAndMemberId(feeId, memberId);
 	}
 
 }
