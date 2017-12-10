@@ -46,6 +46,7 @@ public abstract class PaymentDetailsVO implements Serializable {
 	@GeneratedValue(strategy=GenerationType.TABLE)
 	private Long id;
 	
+	@Column(name="PAID_AMOUNT")
 	private double paidAmount;
 	
 	private String note;
@@ -59,6 +60,9 @@ public abstract class PaymentDetailsVO implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date lastUpdate;
+	
+	@Column(name="RECEIPT_NO")
+	private String receiptNo;
 	
 	@OneToOne
 	private FeeVO fee;

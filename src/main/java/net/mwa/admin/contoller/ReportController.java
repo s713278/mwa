@@ -1,4 +1,4 @@
-package net.mwa.admin.reports;
+package net.mwa.admin.contoller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

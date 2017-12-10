@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.DiscriminatorOptions;
 import org.hibernate.validator.constraints.NotBlank;
@@ -49,13 +50,18 @@ public class MemberDetailsVO {
 	
 	@ApiModelProperty(name="ownerFirstName",example="Chetan",position=0)
 	@Column(name="OWNER_FIRST_NAME")
-	@NotBlank
+	//@NotBlank
 	private String ownerFirstName;
 	
 	@ApiModelProperty(name="ownerLastName",example="K",position=1)
 	@Column(name="OWNER_LAST_NAME")
-	@NotBlank
+	//@NotBlank
 	private String ownerLastName;
+
+	@ApiModelProperty(name="middleName",example="K",position=1)
+	@Column(name="MIDDLE_NAME")
+	private String middleName;
+	
 	
 	@ApiModelProperty(name="plotNo",example="MIG-973/L",position=2)
 	@Column(name="PLOT_NO")
@@ -68,12 +74,17 @@ public class MemberDetailsVO {
 	
 	@ApiModelProperty(name="mobileNo",example="9848336109",position=4)
 	@Column(name="MOBILE_NO")
-	@NotBlank
+	//@NotBlank
 	private String mobileNo;
 	
 	@ApiModelProperty(name="noOfFamilies",example="2",position=5)
 	@Column(name="NO_OF_FAMILIES")
 	private int noOfFamilies = 1;
+	
+	@ApiModelProperty(name="roadNo",example="Road No-27F",position=6)
+	@Column(name="ROAD_NO")
+	private String roadNo;
+	
 	
 	@JsonIgnore
 	@Column(name="IS_ACTIVE")
@@ -94,4 +105,7 @@ public class MemberDetailsVO {
     @LastModifiedDate
     private Date lastUpdate;
 	
+	@JsonIgnore
+	@Transient
+	private String apartmentName;
 }

@@ -1,4 +1,4 @@
-package net.mwa.admin.reports;
+package net.mwa.admin.contoller;
 
 import javax.validation.Valid;
 
