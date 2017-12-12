@@ -23,8 +23,6 @@ public class PaymentLineVO implements Serializable {
 	
 	private String paidBy;
 	
-	private String note;
-	
     private Date paidDate;
 	
 	private Date lastUpdate;
@@ -33,8 +31,6 @@ public class PaymentLineVO implements Serializable {
 	
 	private String category;
 	
-	private int noOfFamilies;
-	
 	private String mobileNo;
 	
 	private String modeOfPayment;
@@ -42,5 +38,11 @@ public class PaymentLineVO implements Serializable {
 	private String chequeNo;
 	
 	private Long feeId;
+	
+	private String note;
+	
+	private String fromBank;
+	
+	private String transactionId;
 	
 }

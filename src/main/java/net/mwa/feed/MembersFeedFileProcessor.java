@@ -65,7 +65,7 @@ public class MembersFeedFileProcessor implements FeedFileParser<MemberDetailsLin
 						} else if (names != null && names.length == 2) {
 							firstName = names[0];
 							lastName = names[1];
-						} else if (names != null && names.length == 3) {
+						} else if (names != null && names.length >= 3) {
 							firstName = names[0];
 							middleName = names[1];
 							lastName = names[2];
@@ -74,8 +74,12 @@ public class MembersFeedFileProcessor implements FeedFileParser<MemberDetailsLin
 					} else if (CategoryTypes.APARTMENT.equalsIgnoreCase(category.trim())) {
 						apartmentName = row[2];
 						memberVO.setCategoryId(2l);
+						firstName=FIRSTNAME;
+						lastName=LASTNAME;
 						memberVO.setApartmentName(apartmentName);
 					} else {
+						firstName=FIRSTNAME;
+						lastName=LASTNAME;
 						businesName = row[2];
 						memberVO.setCategoryId(3l);
 						memberVO.setBusinesName(businesName);
@@ -91,10 +95,10 @@ public class MembersFeedFileProcessor implements FeedFileParser<MemberDetailsLin
 					} catch (NumberFormatException e) {
 						memberVO.setNoOfFamilies(1);
 					}
-					memberVO.setRoadNo(row[5]);
 					if (mobileNo != null && mobileNo.trim().length() == 10) {
 						memberVO.setMobileNo(mobileNo);
 					}else{
+						memberVO.setMobileNo(DEFAULT_MOBILE_NO);
 						System.out.println(mobileNo +" is invalid ##################################################");
 					}
 					list.add(memberVO);
@@ -152,6 +156,8 @@ public class MembersFeedFileProcessor implements FeedFileParser<MemberDetailsLin
 				} else if (CategoryTypes.APARTMENT_ID == categoryId) {
 					noOfApartmentsAdded++;
 					ApartmentVO apartmentVO = new ApartmentVO();
+					apartmentVO.setOwnerFirstName(memberLineVO.getFirstName());
+					apartmentVO.setOwnerLastName(memberLineVO.getLastName());
 					apartmentVO.setPresedentFirstName(memberLineVO.getFirstName());
 					apartmentVO.setPresedentLastName(memberLineVO.getLastName());
 					apartmentVO.setAprtmentName(memberLineVO.getApartmentName());
@@ -188,7 +194,7 @@ public class MembersFeedFileProcessor implements FeedFileParser<MemberDetailsLin
 
 	@Override
 	public Map<String, Object> processFile() {
-		List<MemberDetailsLineVO> list = parse("C:\\TRU\\git\\mwa_1\\src\\main\\resources\\feed\\members_list.csv");
+		List<MemberDetailsLineVO> list = parse("C:\\SwamyAll\\git\\mwa_1\\src\\main\\resources\\feed\\members_list.csv");
 		return updateDataInDB(list);
 	}
 	

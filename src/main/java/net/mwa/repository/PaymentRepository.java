@@ -13,4 +13,6 @@ public interface PaymentRepository extends CrudRepository<PaymentDetailsVO, Long
 	List<PaymentDetailsVO> findByFeeId(final Long feeId);
 	
 	List<PaymentDetailsVO> findByFeeIdAndMemberId(final Long feeId,final Long memberId);
+	
+	public PaymentDetailsVO findByReceiptNo(final String receiptNo) ;
 }

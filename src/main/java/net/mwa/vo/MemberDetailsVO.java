@@ -50,12 +50,12 @@ public class MemberDetailsVO {
 	
 	@ApiModelProperty(name="ownerFirstName",example="Chetan",position=0)
 	@Column(name="OWNER_FIRST_NAME")
-	//@NotBlank
+	@NotBlank
 	private String ownerFirstName;
 	
 	@ApiModelProperty(name="ownerLastName",example="K",position=1)
 	@Column(name="OWNER_LAST_NAME")
-	//@NotBlank
+	@NotBlank
 	private String ownerLastName;
 
 	@ApiModelProperty(name="middleName",example="K",position=1)
@@ -74,7 +74,6 @@ public class MemberDetailsVO {
 	
 	@ApiModelProperty(name="mobileNo",example="9848336109",position=4)
 	@Column(name="MOBILE_NO")
-	//@NotBlank
 	private String mobileNo;
 	
 	@ApiModelProperty(name="noOfFamilies",example="2",position=5)
@@ -105,7 +104,4 @@ public class MemberDetailsVO {
     @LastModifiedDate
     private Date lastUpdate;
 	
-	@JsonIgnore
-	@Transient
-	private String apartmentName;
 }

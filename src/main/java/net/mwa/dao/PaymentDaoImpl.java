@@ -38,4 +38,8 @@ public class PaymentDaoImpl implements PaymentDao {
 		return paymentRepository.findByFeeIdAndMemberId(feeId, memberId);
 	}
 
+	@Override
+	public PaymentDetailsVO findByReceiptNo(final String receiptNo) {
+		return paymentRepository.findByReceiptNo(receiptNo);
+	}
 }

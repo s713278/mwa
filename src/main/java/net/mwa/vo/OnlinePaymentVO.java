@@ -23,4 +23,7 @@ public class OnlinePaymentVO extends PaymentDetailsVO {
 	
 	@Column(name="FROM_BANK")
 	private String fromBank;
+	
+	@Column(name="VERIFIED_STATUS")
+	private String verifiedStatus;
 }

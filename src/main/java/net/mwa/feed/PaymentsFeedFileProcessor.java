@@ -26,6 +26,8 @@ import net.mwa.vo.CashPaymentVO;
 import net.mwa.vo.ChequePaymentVO;
 import net.mwa.vo.FeeVO;
 import net.mwa.vo.MemberDetailsVO;
+import net.mwa.vo.OnlinePaymentVO;
+import net.mwa.vo.PaymentDetailsVO;
 
 @Component
 @Qualifier("PaymentsFeedFileProcessor")
@@ -52,7 +54,6 @@ public class PaymentsFeedFileProcessor implements FeedFileParser<PaymentLineVO> 
 		List<PaymentLineVO> list = new ArrayList<PaymentLineVO>();
 		BufferedReader br = null;
 		String line = "";
-		String cvsSplitBy = ",";
 		try {
 			br = new BufferedReader(new FileReader(filePath));
 			int i = 0;
@@ -63,24 +64,36 @@ public class PaymentsFeedFileProcessor implements FeedFileParser<PaymentLineVO> 
 					continue;
 				}
 				// use comma as separator
-				String[] row = line.split(cvsSplitBy);
+				String[] row = line.split(CSV_SEPARATOR);
 				System.out.println(Arrays.toString(row));
 				String receiptNo = row[0];
 				String paidDate = row[1];
 				String paidBy = row[2];
 				String plotNo = row[3];
 				String category = row[4];
-				String noOfFamilies = row[5];
-				String mobileNo = row[6];
-				String paidAmount = row[7];
-				String modeOfPayment = row[8];
-				String chequeNo = row[9];
-				String feeId = row[10];
-
+				//String noOfFamilies = row[5];
+				String mobileNo = row[5];
+				String paidAmount = row[6];
+				String modeOfPayment = row[7];
+				String chequeNo = row[8];
+				String feeId = row[9];
+				String note = null;
+				String fromBank = null;
+				String transactionId = null;
+				if(row.length == 11){
+					 note = row[10];
+				}else if(row.length == 12){
+					 note = row[10];
+					 fromBank = row[11];
+				}else if(row.length == 13){
+					 note = row[10];
+					 fromBank = row[11];
+					 transactionId = row[12];
+				}
 				if (plotNo != null && plotNo.trim().length() != 0) {
 					paymentLineVO = new PaymentLineVO();
-					paymentLineVO.setPlotNo(plotNo);
-					paymentLineVO.setReceiptNo(receiptNo);
+					paymentLineVO.setPlotNo(plotNo.trim());
+					paymentLineVO.setReceiptNo(receiptNo.trim());
 					Date paidDate_v;
 					try {
 						paidDate_v = new SimpleDateFormat("yyyy-MMM-dd").parse(paidDate);
@@ -88,24 +101,28 @@ public class PaymentsFeedFileProcessor implements FeedFileParser<PaymentLineVO> 
 					} catch (ParseException e1) {
 						e1.printStackTrace();
 					}
-					paymentLineVO.setPaidBy(paidBy);
-					paymentLineVO.setCategory(category);
-					try {
-						paymentLineVO.setNoOfFamilies(Integer.parseInt(noOfFamilies));
-					} catch (NumberFormatException e) {
-						paymentLineVO.setNoOfFamilies(1);
-					}
+					paymentLineVO.setPaidBy(paidBy.trim());
+					paymentLineVO.setCategory(category.trim());
 					if (mobileNo != null && mobileNo.trim().length() == 10) {
-						paymentLineVO.setMobileNo(mobileNo);
+						paymentLineVO.setMobileNo(mobileNo.trim());
+					}else{
+						paymentLineVO.setMobileNo(DEFAULT_MOBILE_NO);
 					}
 					try {
 						paymentLineVO.setPaidAmount(Double.parseDouble(paidAmount));
 					} catch (NumberFormatException e) {
 						paymentLineVO.setPaidAmount(0d);
 					}
-					paymentLineVO.setModeOfPayment(modeOfPayment);
-					paymentLineVO.setFeeId(Long.parseLong(feeId));
-					paymentLineVO.setChequeNo(chequeNo);
+					if(modeOfPayment!=null){
+						paymentLineVO.setModeOfPayment(modeOfPayment.trim());	
+					}
+						paymentLineVO.setFeeId(Long.parseLong(feeId));
+					if(chequeNo!=null){
+						paymentLineVO.setChequeNo(chequeNo.trim());
+					}
+						paymentLineVO.setNote(note);
+						paymentLineVO.setFromBank(fromBank);
+						paymentLineVO.setTransactionId(transactionId);
 				}
 				list.add(paymentLineVO);
 				paymentLineVO = null;
@@ -128,16 +145,18 @@ public class PaymentsFeedFileProcessor implements FeedFileParser<PaymentLineVO> 
 
 	@Override
 	public Map<String, Object> updateDataInDB(List<PaymentLineVO> list) {
-
 		Map<String, Object> result = new ConcurrentHashMap<String, Object>();
 		CashPaymentVO cashPaymentVO = null;
 		ChequePaymentVO chequePaymentVO = null;
-		List<String> invalidPlotNos = new ArrayList<String>();
+		OnlinePaymentVO onlinePaymentVO = null;
+		List<String> newlyCreatedMemmbers = new ArrayList<String>();
 		List<String> invalidFeeIds = new ArrayList<String>();
+		List<String> alreadyUpdatedReceiptNos = new ArrayList<String>();
 		FeeVO feeVO = null;
 		MemberDetailsVO member = null;
-		int totalCashPayments = 0;
-		int totalChequePayments = 0;
+		int cashPayments = 0;
+		int chequePayments = 0;
+		int onlinePayments = 0;
 		for (PaymentLineVO paymentLineVO : list) {
 			String plotNo = paymentLineVO.getPlotNo();
 			member = memberDao.findByPlotNo(plotNo);
@@ -145,7 +164,7 @@ public class PaymentsFeedFileProcessor implements FeedFileParser<PaymentLineVO> 
 				if (LOGGER.isDebugEnabled()) {
 					LOGGER.debug("No member record found for #plot no :" + plotNo);
 				}
-				invalidPlotNos.add("No member record found for #plot no :" + plotNo);
+				newlyCreatedMemmbers.add(plotNo);
 				continue;
 			}
 			feeVO = feeDao.findAny(paymentLineVO.getFeeId());
@@ -153,11 +172,16 @@ public class PaymentsFeedFileProcessor implements FeedFileParser<PaymentLineVO> 
 				if (LOGGER.isDebugEnabled()) {
 					LOGGER.debug("No fee record found for #id :" + paymentLineVO.getFeeId());
 				}
-				invalidPlotNos.add("No member record found for #id :" + paymentLineVO.getFeeId());
+				invalidFeeIds.add(String.valueOf(paymentLineVO.getFeeId()));
+				continue;
+			}
+			PaymentDetailsVO detailsVO= paymentDao.findByReceiptNo(paymentLineVO.getReceiptNo());
+			if(detailsVO!=null){
+				alreadyUpdatedReceiptNos.add(paymentLineVO.getReceiptNo());
 				continue;
 			}
 			if (PaymentTypes.CASH.equalsIgnoreCase(paymentLineVO.getModeOfPayment())) {
-				totalCashPayments++;
+				cashPayments++;
 				cashPaymentVO = new CashPaymentVO();
 				cashPaymentVO.setReceiptNo(paymentLineVO.getReceiptNo());
 				cashPaymentVO.setPaidAmount(paymentLineVO.getPaidAmount());
@@ -169,7 +193,7 @@ public class PaymentsFeedFileProcessor implements FeedFileParser<PaymentLineVO> 
 				cashPaymentVO.setMobileNo(paymentLineVO.getMobileNo());
 				paymentDao.save(cashPaymentVO);
 			} else if (PaymentTypes.CHEQUE.equalsIgnoreCase(paymentLineVO.getModeOfPayment())) {
-				totalChequePayments++;
+				chequePayments++;
 				chequePaymentVO = new ChequePaymentVO();
 				chequePaymentVO.setReceiptNo(paymentLineVO.getReceiptNo());
 				chequePaymentVO.setPaidAmount(paymentLineVO.getPaidAmount());
@@ -178,19 +202,32 @@ public class PaymentsFeedFileProcessor implements FeedFileParser<PaymentLineVO> 
 				chequePaymentVO.setFee(feeVO);
 				chequePaymentVO.setChequeNo(paymentLineVO.getChequeNo());
 				paymentDao.save(chequePaymentVO);
+			}else if (PaymentTypes.ONLINE.equalsIgnoreCase(paymentLineVO.getModeOfPayment())) {
+				onlinePayments++;
+				onlinePaymentVO = new OnlinePaymentVO();
+				onlinePaymentVO.setReceiptNo(paymentLineVO.getReceiptNo());
+				onlinePaymentVO.setPaidAmount(paymentLineVO.getPaidAmount());
+				onlinePaymentVO.setPaidDate(paymentLineVO.getPaidDate());
+				onlinePaymentVO.setMember(member);
+				onlinePaymentVO.setFee(feeVO);
+				onlinePaymentVO.setFromBank(paymentLineVO.getFromBank());
+				onlinePaymentVO.setTransactionId(paymentLineVO.getTransactionId());
+				paymentDao.save(onlinePaymentVO);
 			}
 		}
-		result.put("INVALID_PLOT_IDS", invalidPlotNos);
+		result.put("NEWLY_CREATED_MEMMBERS", newlyCreatedMemmbers);
 		result.put("INVALID_FEE_IDS", invalidFeeIds);
-		result.put("TOTAL_CHEQUE_PAYMENTS", totalChequePayments);
-		result.put("TOTAL_CASH_PAYMENTS", totalCashPayments);
+		result.put("CHEQUE_PAYMENTS", chequePayments);
+		result.put("CASH_PAYMENTS", cashPayments);
+		result.put("ONLINE_PAYMENTS", onlinePayments);
+		result.put("ALREADY_UPDATED_RECEIPT_NOS", alreadyUpdatedReceiptNos);
 		return result;
 
 	}
 
 	@Override
 	public Map<String, Object> processFile() {
-		List<PaymentLineVO> list = parse("C:\\TRU\\git\\mwa_1\\src\\main\\resources\\feed\\members_list.csv");
+		List<PaymentLineVO> list = parse("C:\\SwamyAll\\git\\mwa_1\\src\\main\\resources\\feed\\CC-Cameras_Payments.csv");
 		return updateDataInDB(list);
 	}
 
