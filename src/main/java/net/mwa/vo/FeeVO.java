@@ -69,6 +69,8 @@ public class FeeVO {
 	@OneToOne
 	private CategoryVO category;
 	
+	@Column(name = "FEE_BY_FAMILY")
+	private boolean feebyFamily=false; 
 	
 	@Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

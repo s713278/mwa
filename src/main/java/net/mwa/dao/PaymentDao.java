@@ -17,4 +17,6 @@ public interface PaymentDao {
 	List<PaymentDetailsVO> findByFeeIdAndMemberId(final Long feeId,final Long memberId);
 	
 	PaymentDetailsVO findByReceiptNo(final String receiptNo);
+	
+	
 }

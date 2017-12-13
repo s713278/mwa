@@ -1,5 +1,6 @@
 package net.mwa.common;
 
+import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -14,4 +15,8 @@ public class PaymentHistoryResponse extends APICommonResponse {
 	int count;
 
 	List<PaymentDetailsVO> paymentHistory;
+	
+	double dueAmount=-1;
+	
+	Date lastDueDate; 
 }

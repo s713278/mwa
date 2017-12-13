@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import net.mwa.common.PaymentDueResponse;
+import net.mwa.common.PaymentHistoryRequest;
 import net.mwa.common.PaymentHistoryResponse;
 import net.mwa.common.PaymentRequest;
 import net.mwa.common.PaymentResponse;
@@ -51,46 +52,56 @@ public class PaymentService {
 			return response;
 		}
 		double enteredAmount = paymentRequest.getAmount();
-		if (enteredAmount <= 0 && enteredAmount <=10) {
+		if (enteredAmount <= 0 && enteredAmount <= 10) {
 			response.setSuccess(Boolean.FALSE);
 			response.setUserMessage("Minimum amount should be Rs 10");
 			response.setDeveloperMessage("Invalid amount is entered and entered amount is  " + enteredAmount);
 			return response;
 		}
-		
-		//If any payments already made by member
+
+		// If any payments already made by member
 		List<PaymentDetailsVO> payments = paymentDao.findByFeeIdAndMemberId(feeId, memberId);
 		double paidAmount = 0;
-		if(payments!=null && payments.size()>0){
-			for(PaymentDetailsVO paymentDetailsVO : payments){
+		if (payments != null && payments.size() > 0) {
+			for (PaymentDetailsVO paymentDetailsVO : payments) {
 				paidAmount += paymentDetailsVO.getPaidAmount();
 			}
 		}
-		//If amount is entered that than the due amount
-		double dueAmount = actualFeeVO.getAmount()-paidAmount;
+		// If amount is entered that than the due amount
+		boolean isFeebyFamity = actualFeeVO.isFeebyFamily();
+		double actualAmount = actualFeeVO.getAmount();
+		double dueAmount = 0;
+		if(isFeebyFamity){
+			actualAmount = actualAmount * memberDetailsVO.getNoOfFamilies();
+		}
+		dueAmount = actualAmount - paidAmount;
 		if (enteredAmount > dueAmount) {
 			enteredAmount = dueAmount;
 		}
-		
 		if (dueAmount == 0) {
 			response.setSuccess(Boolean.FALSE);
-			response.setUserMessage("No dues pending..");			
-			String developerMessage = MessageFormat.format("No dues pending for the member #{0} and feeId #{1}", new Object[]{String.valueOf(memberId),feeId});
+			response.setUserMessage("No dues pending..");
+			String developerMessage = MessageFormat.format("No dues pending for the member #{0} and feeId #{1}",
+					new Object[] { String.valueOf(memberId), feeId });
 			response.setDeveloperMessage(developerMessage);
 			return response;
 		}
-		/*if (enteredAmount < dueAmount) {
-			response.setSuccess(Boolean.FALSE);
-			response.setUserMessage(enteredAmount + " is not matching with due amount :" + dueAmount
-					+ ". Please correct it and try again");
-			response.setDeveloperMessage(enteredAmount + " is not matching with due amount :" + dueAmount
-					+ ". Please correct it and try again");
-			return response;
-		}*/
+		/*
+		 * if (enteredAmount < dueAmount) { response.setSuccess(Boolean.FALSE);
+		 * response.setUserMessage(enteredAmount +
+		 * " is not matching with due amount :" + dueAmount +
+		 * ". Please correct it and try again");
+		 * response.setDeveloperMessage(enteredAmount +
+		 * " is not matching with due amount :" + dueAmount +
+		 * ". Please correct it and try again"); return response; }
+		 */
 		CashPaymentVO detailsVO = new CashPaymentVO();
 		detailsVO.setPaidAmount(enteredAmount);
 		detailsVO.setMember(memberDetailsVO);
 		detailsVO.setFee(actualFeeVO);
+		detailsVO.setPaidBy(paymentRequest.getPaidBy());
+		detailsVO.setCollectedBy(paymentRequest.getCollectedBy());
+		detailsVO.setMobileNo(paymentRequest.getMobileNo());
 		detailsVO = (CashPaymentVO) paymentDao.save(detailsVO);
 		response.setSuccess(Boolean.TRUE);
 		response.setTransactionId(String.valueOf(detailsVO.getId()));
@@ -104,25 +115,27 @@ public class PaymentService {
 	public PaymentDueResponse getPaymentDuesByMemberId(final Long memberId) {
 		PaymentDueResponse response = new PaymentDueResponse();
 		MemberDetailsVO memberDetailsVO = memberRegDao.findAny(memberId);
-		if(memberDetailsVO ==null){
+		if (memberDetailsVO == null) {
 			response.setSuccess(Boolean.FALSE);
 			return response;
 		}
 		CategoryVO categoryVO = memberDetailsVO.getCategory();
-		//Get all payments
+		// Get all fee payments
 		List<FeeVO> allPayments = feeDao.findByCategoryId(categoryVO.getId());
-		
-		//Get already paid payments
+
+		// Get already paid payments
 		List<PaymentDetailsVO> paidPayments = paymentDao.findByMemberId(memberId);
-		
+
 		List<FeeVO> duePayments = new ArrayList<FeeVO>(allPayments);
-		/*for(PaymentDetailsVO paymentDetailsVO : paidPayments){
-			duePayments = allPayments.stream().filter(fee->(paymentDetailsVO.getFee().getId()!=fee.getId())).collect(Collectors.toList());
-		}*/
-		for(int i = 0 ; i < paidPayments.size(); i++){
-			PaymentDetailsVO paidPaymentVO= paidPayments.get(i);
-			for(FeeVO feeVO : allPayments){
-				if(paidPaymentVO.getFee().getId() == feeVO.getId()){
+		/*
+		 * for(PaymentDetailsVO paymentDetailsVO : paidPayments){ duePayments =
+		 * allPayments.stream().filter(fee->(paymentDetailsVO.getFee().getId()!=
+		 * fee.getId())).collect(Collectors.toList()); }
+		 */
+		for (int i = 0; i < paidPayments.size(); i++) {
+			PaymentDetailsVO paidPaymentVO = paidPayments.get(i);
+			for (FeeVO feeVO : allPayments) {
+				if (paidPaymentVO.getFee().getId() == feeVO.getId()) {
 					duePayments.remove(feeVO);
 				}
 			}
@@ -139,6 +152,7 @@ public class PaymentService {
 	 * <p>
 	 * 
 	 * </p>
+	 * 
 	 * @param memberID
 	 * @return
 	 */
@@ -155,6 +169,7 @@ public class PaymentService {
 	 * <p>
 	 * 
 	 * </p>
+	 * 
 	 * @param feeID
 	 * @return
 	 */
@@ -166,7 +181,55 @@ public class PaymentService {
 		response.setPaymentHistory(result);
 		return response;
 	}
-	
-	
-	
+
+	/**
+	 * <p>
+	 * 
+	 * </p>
+	 * 
+	 * @param paymentRequest
+	 * @return
+	 */
+	public PaymentHistoryResponse getPaymentsByMemberIdANDFeeId(PaymentHistoryRequest paymentRequest) {
+		Long memberId = paymentRequest.getMemberId();
+		PaymentHistoryResponse response = new PaymentHistoryResponse();
+		MemberDetailsVO memberDetailsVO = memberRegDao.findAny(memberId);
+		if (memberDetailsVO == null) {
+			response.setSuccess(Boolean.FALSE);
+			response.setUserMessage("Invalid member id");
+			response.setDeveloperMessage("No member details found with # " + memberId);
+			return response;
+		}
+		Long feeId = paymentRequest.getFeeId();
+		FeeVO actualFeeVO = feeDao.findAny(feeId);
+		if (feeId == null || actualFeeVO == null) {
+			response.setSuccess(Boolean.FALSE);
+			response.setUserMessage("Invalid fee id");
+			response.setDeveloperMessage("No member fee details found with # " + feeId);
+			return response;
+		}
+		// If any payments already made by member
+		List<PaymentDetailsVO> paymentHistory = paymentDao.findByFeeIdAndMemberId(feeId, memberId);
+
+		boolean isFeebyFamity = actualFeeVO.isFeebyFamily();
+		double actualAmount = actualFeeVO.getAmount();
+		double dueAmount = 0;
+		double paidAmount = 0;
+		
+		if(isFeebyFamity){
+			actualAmount = actualAmount * memberDetailsVO.getNoOfFamilies();
+		}
+		
+		for (PaymentDetailsVO paymentDetailsVO : paymentHistory) {
+			paidAmount += paymentDetailsVO.getPaidAmount();
+		}		
+		dueAmount = actualAmount - paidAmount;
+		response.setSuccess(Boolean.TRUE);
+		response.setCount(paymentHistory.size());
+		response.setPaymentHistory(paymentHistory);
+		response.setDueAmount(dueAmount);
+		response.setLastDueDate(actualFeeVO.getExpireDate());
+		return response;
+	}
+
 }

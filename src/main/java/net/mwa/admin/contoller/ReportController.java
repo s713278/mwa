@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.mwa.common.APICommonResponse;
+import net.mwa.common.PaymentHistoryRequest;
 import net.mwa.common.PaymentHistoryResponse;
 import net.mwa.service.PaymentService;
 import net.mwa.vo.PaymentDetailsVO;
@@ -22,14 +23,14 @@ public class ReportController {
 	private PaymentService paymentService;
 	
 	@ApiOperation(value = "Gets payment history by the member id.")
-	@PostMapping(value = "/paymentHistoryByMemberId/{membId}")
+	@PostMapping(value = "/paymentsByMemberId/{membId}")
 	public @ResponseBody APICommonResponse getPaymentHistoryByMemberId(@PathVariable Long membId) {
 		PaymentHistoryResponse response = (PaymentHistoryResponse) paymentService.getPaymentHistoryByMemberId(membId);
 		return response;
 	}
 	
 	@ApiOperation(value = "Gets payment history by the fee id.")
-	@PostMapping(value = "/getPaymentHistoryByFeeId/{feeId}")
+	@PostMapping(value = "/getPaymentsByFeeId/{feeId}")
 	public @ResponseBody APICommonResponse getPaymentHistoryByFeeId(@PathVariable Long feeId) {
 		PaymentHistoryResponse response = (PaymentHistoryResponse) paymentService.getPaymentHistoryByFeeId(feeId);
 		return response;
@@ -41,5 +42,9 @@ public class ReportController {
 		return paymentService.listAllPayments();
 	}
 	
-
+	@ApiOperation(value = "Gets all payment based on memberId and feeId.")
+	@PostMapping(value = "/paymentsByMemberIdANDFeeId")
+	public @ResponseBody PaymentHistoryResponse paymentsByMemberIdANDFeeId(final PaymentHistoryRequest historyRequest) {
+		return paymentService.getPaymentsByMemberIdANDFeeId(historyRequest);
+	}
 }
