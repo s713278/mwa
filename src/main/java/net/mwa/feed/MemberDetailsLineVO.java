@@ -38,4 +38,8 @@ public class MemberDetailsLineVO implements Serializable {
 	
 	private String businesName;
 	
+	private String webSite;
+	
+	private String whatsApp;
+	
 }

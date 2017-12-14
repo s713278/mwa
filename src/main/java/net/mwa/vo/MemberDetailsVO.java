@@ -1,11 +1,12 @@
 package net.mwa.vo;
 
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -36,58 +40,61 @@ import lombok.Data;
 @Table(name = "MEMBER_DETAILS")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name="TYPE", discriminatorType=DiscriminatorType.STRING, length=20)
-@DiscriminatorValue("INDEPENDENT")
 @DiscriminatorOptions(force=true)
 @Data
 @JsonIgnoreProperties(value = {"createdDate", "lastUpdate"}, allowGetters = false)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @EntityListeners(AuditingEntityListener.class)
-public class MemberDetailsVO {
+public abstract class MemberDetailsVO {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
 	private Long id;
 	
-	@ApiModelProperty(name="ownerFirstName",example="Chetan",position=0)
-	@Column(name="OWNER_FIRST_NAME")
-	@NotBlank
-	private String ownerFirstName;
 	
-	@ApiModelProperty(name="ownerLastName",example="K",position=1)
-	@Column(name="OWNER_LAST_NAME")
+	@Column(name="FIRST_NAME")
 	@NotBlank
-	private String ownerLastName;
+	private String firstName;
+	
+	@Column(name="LAST_NAME")
+	@NotBlank
+	private String lastName;
 
-	@ApiModelProperty(name="middleName",example="K",position=1)
 	@Column(name="MIDDLE_NAME")
 	private String middleName;
 	
 	
-	@ApiModelProperty(name="plotNo",example="MIG-973/L",position=2)
 	@Column(name="PLOT_NO")
 	@NotBlank
 	private String plotNo;
 	
-	@ApiModelProperty(name="emailID",example="mwa.abcde@gmail.com",position=3)
+	@Column(name="ADDRESS1")
+	private String address1;
+	
 	@Column(name="EMAIL_ID")
 	private String emailID;
 	
-	@ApiModelProperty(name="mobileNo",example="9848336109",position=4)
 	@Column(name="MOBILE_NO")
 	private String mobileNo;
 	
-	@ApiModelProperty(name="noOfFamilies",example="2",position=5)
 	@Column(name="NO_OF_FAMILIES")
 	private int noOfFamilies = 1;
 	
-	@ApiModelProperty(name="roadNo",example="Road No-27F",position=6)
 	@Column(name="ROAD_NO")
 	private String roadNo;
 	
+	@ApiModelProperty(name="password",example="*********",position=8)
+	@Column(name="PASSWORD")
+	@Transient
+	private String password;
 	
 	@JsonIgnore
 	@Column(name="IS_ACTIVE")
-	private short active=1;
+	private boolean active=false;
+			
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
+	private Set<RoleVO> roles;
 	
 	@OneToOne
 	private CategoryVO category;

@@ -26,4 +26,6 @@ public class ApartmentVO extends MemberDetailsVO {
 	
 	private String secreteryMobileNo;
 	
+	private String apartmentEmail;
+	
 }

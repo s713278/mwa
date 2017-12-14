@@ -19,6 +19,7 @@ import net.mwa.dao.MemberDao;
 import net.mwa.vo.ApartmentVO;
 import net.mwa.vo.CategoryVO;
 import net.mwa.vo.CommercialVO;
+import net.mwa.vo.IndividualOwnerVO;
 import net.mwa.vo.MemberDetailsVO;
 
 @Component
@@ -126,38 +127,36 @@ public class MembersFeedFileProcessor implements FeedFileParser<MemberDetailsLin
 	public Map<String, Object> updateDataInDB(List<MemberDetailsLineVO> membersData) {
 		Map<String, Object> resultMap = new ConcurrentHashMap<String, Object>();
 		List<String> duplicateRecords=new ArrayList<>();
-		MemberDetailsVO memberRecord = new MemberDetailsVO();
 		CategoryVO categoryVO=null;
 		int noOfApartmentsAdded=0;
 		int noOfIndependetsAdded=0;
 		int noOfCommercialsAdded=0;
 		for (MemberDetailsLineVO memberLineVO : membersData) {
 			String plotNo = memberLineVO.getPlotNo().trim();
-			memberRecord = memberDao.findByPlotNo(plotNo);
+			MemberDetailsVO memberRecord = memberDao.findByPlotNo(plotNo);
 			if(memberRecord != null){
-				System.out.println(memberRecord.getOwnerFirstName() +"/"+memberRecord.getMobileNo()+" Record already existed for "+plotNo);
-				duplicateRecords.add(memberRecord.getOwnerFirstName() +"/"+memberRecord.getMobileNo()+" Record already existed for "+plotNo);
+				duplicateRecords.add(memberRecord.getPlotNo());
 			}else{
 				long categoryId = memberLineVO.getCategoryId();
 				if (CategoryTypes.INDEPENDENT_ID == categoryId) {
 					noOfIndependetsAdded++;
-					memberRecord=new MemberDetailsVO();
-					memberRecord.setOwnerFirstName(memberLineVO.getFirstName());
-					memberRecord.setOwnerLastName(memberLineVO.getLastName());
-					memberRecord.setMiddleName(memberLineVO.getMiddleName());
-					memberRecord.setPlotNo(memberLineVO.getPlotNo());
-					memberRecord.setRoadNo(memberLineVO.getRoadNo());
-					memberRecord.setNoOfFamilies(memberLineVO.getNoOfFamilies());
-					memberRecord.setMobileNo(memberLineVO.getMobileNo());
+					IndividualOwnerVO individualVO=new IndividualOwnerVO();
+					individualVO.setFirstName(memberLineVO.getFirstName());
+					individualVO.setLastName(memberLineVO.getLastName());
+					individualVO.setMiddleName(memberLineVO.getMiddleName());
+					individualVO.setPlotNo(memberLineVO.getPlotNo());
+					individualVO.setRoadNo(memberLineVO.getRoadNo());
+					individualVO.setNoOfFamilies(memberLineVO.getNoOfFamilies());
+					individualVO.setMobileNo(memberLineVO.getMobileNo());
 					categoryVO=new CategoryVO();
 					categoryVO.setId(memberLineVO.getCategoryId());
-					memberRecord.setCategory(categoryVO);
-					memberDao.save(memberRecord);
+					individualVO.setCategory(categoryVO);
+					memberDao.save(individualVO);
 				} else if (CategoryTypes.APARTMENT_ID == categoryId) {
 					noOfApartmentsAdded++;
 					ApartmentVO apartmentVO = new ApartmentVO();
-					apartmentVO.setOwnerFirstName(memberLineVO.getFirstName());
-					apartmentVO.setOwnerLastName(memberLineVO.getLastName());
+					apartmentVO.setPresedentFirstName(memberLineVO.getFirstName());
+					apartmentVO.setPresedentLastName(memberLineVO.getLastName());
 					apartmentVO.setPresedentFirstName(memberLineVO.getFirstName());
 					apartmentVO.setPresedentLastName(memberLineVO.getLastName());
 					apartmentVO.setAprtmentName(memberLineVO.getApartmentName());
@@ -173,8 +172,8 @@ public class MembersFeedFileProcessor implements FeedFileParser<MemberDetailsLin
 				} else if (CategoryTypes.COMMERCIAL_ID == categoryId) {
 					noOfCommercialsAdded++;
 					CommercialVO commercialVO = new CommercialVO();
-					commercialVO.setOwnerFirstName(memberLineVO.getFirstName());
-					commercialVO.setOwnerLastName(memberLineVO.getLastName());
+					commercialVO.setFirstName(memberLineVO.getFirstName());
+					commercialVO.setLastName(memberLineVO.getLastName());
 					commercialVO.setBusinessName(memberLineVO.getFirstName());
 					categoryVO=new CategoryVO();
 					categoryVO.setId(memberLineVO.getCategoryId());

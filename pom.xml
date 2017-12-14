@@ -92,23 +92,28 @@
 			<artifactId>lombok</artifactId>
 			<scope>compile</scope>
 		</dependency>
-	<!-- Start : MySQL Dependency -->
+		<!-- Start : MySQL Dependency -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
-	<!-- End : MySQL Dependency -->
-	
-	<!--Start : Session management  -->
+		<!-- End : MySQL Dependency -->
+
+		<!--Start : Session management -->
 		<dependency>
-                <groupId>org.springframework.session</groupId>
-                <artifactId>spring-session</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-    <!--End : Session management  -->
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		<!--End : Session management -->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

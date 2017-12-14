@@ -3,47 +3,81 @@
  */
 package net.mwa.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.transaction.Transactional;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import net.mwa.api.vo.MemberRegRequest;
+import net.mwa.api.vo.MemberRegResponse;
 import net.mwa.common.APICommonResponse;
+import net.mwa.common.CategoryTypes;
 import net.mwa.common.ErrorCodes;
-import net.mwa.common.MemberRegResponse;
 import net.mwa.common.SearchMemberRequest;
 import net.mwa.common.SearchMemberResponse;
-import net.mwa.dao.FeeDao;
 import net.mwa.dao.MemberDao;
-import net.mwa.dao.PaymentDao;
+import net.mwa.repository.RoleRepository;
+import net.mwa.vo.IndividualOwnerVO;
 import net.mwa.vo.MemberDetailsVO;
+import net.mwa.vo.RoleVO;
 
 /**
  * @author Mahi
  *
  */
-@Service
-public class MemberService {
+@Service("memberService")
+public class MemberService implements UserDetailsService{
 
 	@Autowired
 	private MemberDao memberRegDao;
 	
 	@Autowired
-	private FeeDao feeDao;
+	RoleRepository roleRepository;
+
+	@SuppressWarnings("unused")
+	private final static Logger LOGGER = Logger.getLogger(MemberService.class.getName());
 	
 	@Autowired
-	private PaymentDao paymentDao;
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	private static Logger logger = Logger.getLogger(MemberService.class.getName());
-
-	public APICommonResponse save(MemberDetailsVO info) {
-		String mobileNo = info.getMobileNo();
+	public APICommonResponse save(MemberRegRequest request) {
+		String mobileNo = request.getMobileNo();
 		MemberRegResponse response = new MemberRegResponse();
 		MemberDetailsVO momberDetails = memberRegDao.findByMobileNo(mobileNo);
 		boolean recordExisted = Boolean.FALSE;
 		if (momberDetails == null) {
-			MemberDetailsVO momberDetailsByPlotNo = memberRegDao.findByPlotNo(info.getPlotNo());
+			MemberDetailsVO momberDetailsByPlotNo = memberRegDao.findByPlotNo(request.getPlotNo());
 			if (momberDetailsByPlotNo == null) {
-				momberDetails = memberRegDao.save(info);
+				if(CategoryTypes.INDEPENDENT_ID == request.getCategoryId()){
+					IndividualOwnerVO individualVO = new IndividualOwnerVO();
+					individualVO.setFirstName(request.getFirstName());
+					individualVO.setLastName(request.getLastName());
+					individualVO.setMiddleName(request.getMiddleName());
+					individualVO.setPlotNo(request.getPlotNo());
+					individualVO.setRoadNo(request.getRoadNo());
+					individualVO.setNoOfFamilies(request.getNoOfFamilies());
+					individualVO.setMobileNo(request.getMobileNo());
+					individualVO.setId(request.getCategoryId());				
+					individualVO.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
+					RoleVO userRole = roleRepository.findByRole("ADMIN");
+					individualVO.setRoles(new HashSet<RoleVO>(Arrays.asList(userRole)));
+					momberDetails = memberRegDao.save(individualVO);
+				}else{
+					
+				}
 				response.setSuccess(Boolean.TRUE);
 			} else {
 				// If record found search by plotNo
@@ -90,4 +124,27 @@ public class MemberService {
 		return memberRegDao.findAll();
 	}
 
+
+	
+	@Override
+	@Transactional
+	public UserDetails loadUserByUsername(String plotNo) throws UsernameNotFoundException {
+		MemberDetailsVO memberDetailsVO = memberRegDao.findByPlotNo(plotNo);
+		List<GrantedAuthority> authorities = getUserAuthority(memberDetailsVO.getRoles());
+		return buildUserForAuthentication(memberDetailsVO, authorities);
+	}
+
+	private List<GrantedAuthority> getUserAuthority(Set<RoleVO> userRoles) {
+		Set<GrantedAuthority> roles = new HashSet<GrantedAuthority>();
+		for (RoleVO role : userRoles) {
+			roles.add(new SimpleGrantedAuthority(role.getRole()));
+		}
+
+		List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>(roles);
+		return grantedAuthorities;
+	}
+
+	private UserDetails buildUserForAuthentication(MemberDetailsVO user, List<GrantedAuthority> authorities) {
+		return new org.springframework.security.core.userdetails.User(user.getPlotNo(), user.getPassword(), user.isActive(), true, true, true, authorities);
+	}
 }

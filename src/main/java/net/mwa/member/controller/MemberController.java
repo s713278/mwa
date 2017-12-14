@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.swagger.annotations.Api;
+import net.mwa.api.vo.MemberRegRequest;
 import net.mwa.common.APICommonResponse;
 import net.mwa.common.SearchMemberRequest;
 import net.mwa.common.SearchMemberResponse;
@@ -33,13 +34,13 @@ public class MemberController {
 	}
 
 	@PostMapping("/add")
-	public @ResponseBody APICommonResponse addMember(@Valid @RequestBody MemberDetailsVO memberReg) {
-		return memberService.save(memberReg);
+	public @ResponseBody APICommonResponse addMember(@Valid @RequestBody MemberRegRequest request ) {
+		return memberService.save(request);
 	}
 
 	@PostMapping("/update")
-	public @ResponseBody APICommonResponse updateMember(@RequestBody MemberDetailsVO memberReg) {
-		return memberService.save(memberReg);
+	public @ResponseBody APICommonResponse updateMember(@RequestBody MemberRegRequest  request) {
+		return memberService.save(request);
 	}
 
 	@GetMapping(value = "/listAll")

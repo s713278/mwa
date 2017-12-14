@@ -22,4 +22,9 @@ public class CommercialVO extends MemberDetailsVO {
 	@Column(name="BUSINESS_LOGO_PATH")
 	private String businessLogoPath;
 	
+	@Column(name="WEBSITE")
+	private String webSite;
+	
+	@Column(name="WHATS_APP_NO")
+	private String whatsAppNo;
 }
