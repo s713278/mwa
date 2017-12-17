@@ -12,12 +12,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import net.mwa.service.MemberService;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
 	@Autowired
@@ -27,7 +26,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth)
 			throws Exception {
 		auth.userDetailsService(userDetailsService)
-			.passwordEncoder(bCryptPasswordEncoder);
+			.passwordEncoder(((MemberService)userDetailsService).getbCryptPasswordEncoder());
 	}
 
 	@Override
@@ -35,8 +34,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		
 		http.
 			authorizeRequests()
-				.antMatchers("/").permitAll()
-				.antMatchers("/login").permitAll()
+				.antMatchers("/**").permitAll()
+				.antMatchers("/webjars/**").permitAll()
 				.antMatchers("/registration").permitAll()
 				.antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
 				.authenticated().and().csrf().disable().formLogin()

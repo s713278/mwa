@@ -50,6 +50,14 @@ public class MemberService implements UserDetailsService{
 	@SuppressWarnings("unused")
 	private final static Logger LOGGER = Logger.getLogger(MemberService.class.getName());
 	
+	public BCryptPasswordEncoder getbCryptPasswordEncoder() {
+		return bCryptPasswordEncoder;
+	}
+
+	public void setbCryptPasswordEncoder(BCryptPasswordEncoder bCryptPasswordEncoder) {
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+	}
+
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
