@@ -2,11 +2,11 @@ package net.mwa.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import net.mwa.vo.MemberDetailsVO;
+import net.mwa.vo.UserDetailsVO;
 
-public interface MemberRepository extends CrudRepository<MemberDetailsVO, Long> {
+public interface MemberRepository extends CrudRepository<UserDetailsVO, Long> {
 
-	MemberDetailsVO findByMobileNo(final String mobileNo);
+	UserDetailsVO findByMobileNo(final String mobileNo);
 	
-	MemberDetailsVO findByPlotNo(final String plotNo);
+	UserDetailsVO findByPlotNo(final String plotNo);
 }

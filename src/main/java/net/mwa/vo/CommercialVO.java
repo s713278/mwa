@@ -11,7 +11,7 @@ import lombok.Data;
 @Entity
 @Table(name = "COMMERCIAL_DETAILS")
 @DiscriminatorValue("COMMERCIAL")
-public class CommercialVO extends MemberDetailsVO {
+public class CommercialVO extends UserDetailsVO {
 
 	@Column(name="BUSINESS_NAME")
 	private String businessName;

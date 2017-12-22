@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,8 +18,8 @@ import net.mwa.dao.MemberDao;
 import net.mwa.vo.ApartmentVO;
 import net.mwa.vo.CategoryVO;
 import net.mwa.vo.CommercialVO;
-import net.mwa.vo.IndividualOwnerVO;
-import net.mwa.vo.MemberDetailsVO;
+import net.mwa.vo.IndependentHouseVO;
+import net.mwa.vo.UserDetailsVO;
 
 @Component
 @Qualifier("MembersFeedFileProcessor")
@@ -44,44 +43,29 @@ public class MembersFeedFileProcessor implements FeedFileParser<MemberDetailsLin
 					continue;
 				}
 				String[] row = line.split(CSV_SEPARATOR);
-				String firstName = "";
-				String lastName = "";
-				String middleName = "";
-				String apartmentName = "";
-				String businesName = "";
-				String plotNo = row[1];
-				String category = row[2];
-				String roadNo = row[3];
-				String noOfFamilies = row[4];
-				String mobileNo = row[6];
+				String firstName = row[0];
+				String middleName = row[1];
+				String lastName = row[2];
+				String plotNo = row[3];
+				String category = row[4];
+				String roadNo = row[5];
+				String noOfFamilies = row[6];
+				String otherName = row[7];
+				String mobileNo = row[8];
+				
+				String apartmentName="";
+				String businesName ="";
 				// use comma as separator
 				memberVO = new MemberDetailsLineVO();
-				String[] names = row[0].split(" ");
-				System.out.println("########################### Names :: " + Arrays.toString(names));
 				if (category != null) {
 					if (CategoryTypes.INDEPENDENT.equalsIgnoreCase(category.trim())) {
-						if (names != null && names.length == 1) {
-							firstName = names[0];
-							lastName = names[0];
-						} else if (names != null && names.length == 2) {
-							firstName = names[0];
-							lastName = names[1];
-						} else if (names != null && names.length >= 3) {
-							firstName = names[0];
-							middleName = names[1];
-							lastName = names[2];
-						}
 						memberVO.setCategoryId(1l);
 					} else if (CategoryTypes.APARTMENT.equalsIgnoreCase(category.trim())) {
-						apartmentName = row[2];
+						apartmentName = otherName;
 						memberVO.setCategoryId(2l);
-						firstName=FIRSTNAME;
-						lastName=LASTNAME;
 						memberVO.setApartmentName(apartmentName);
 					} else {
-						firstName=FIRSTNAME;
-						lastName=LASTNAME;
-						businesName = row[2];
+						businesName = otherName;
 						memberVO.setCategoryId(3l);
 						memberVO.setBusinesName(businesName);
 					}
@@ -100,7 +84,6 @@ public class MembersFeedFileProcessor implements FeedFileParser<MemberDetailsLin
 						memberVO.setMobileNo(mobileNo);
 					}else{
 						memberVO.setMobileNo(DEFAULT_MOBILE_NO);
-						System.out.println(mobileNo +" is invalid ##################################################");
 					}
 					list.add(memberVO);
 					memberVO = null;
@@ -133,14 +116,14 @@ public class MembersFeedFileProcessor implements FeedFileParser<MemberDetailsLin
 		int noOfCommercialsAdded=0;
 		for (MemberDetailsLineVO memberLineVO : membersData) {
 			String plotNo = memberLineVO.getPlotNo().trim();
-			MemberDetailsVO memberRecord = memberDao.findByPlotNo(plotNo);
+			UserDetailsVO memberRecord = memberDao.findByPlotNo(plotNo);
 			if(memberRecord != null){
 				duplicateRecords.add(memberRecord.getPlotNo());
 			}else{
 				long categoryId = memberLineVO.getCategoryId();
 				if (CategoryTypes.INDEPENDENT_ID == categoryId) {
 					noOfIndependetsAdded++;
-					IndividualOwnerVO individualVO=new IndividualOwnerVO();
+					IndependentHouseVO individualVO=new IndependentHouseVO();
 					individualVO.setFirstName(memberLineVO.getFirstName());
 					individualVO.setLastName(memberLineVO.getLastName());
 					individualVO.setMiddleName(memberLineVO.getMiddleName());
@@ -155,11 +138,10 @@ public class MembersFeedFileProcessor implements FeedFileParser<MemberDetailsLin
 				} else if (CategoryTypes.APARTMENT_ID == categoryId) {
 					noOfApartmentsAdded++;
 					ApartmentVO apartmentVO = new ApartmentVO();
-					apartmentVO.setPresedentFirstName(memberLineVO.getFirstName());
-					apartmentVO.setPresedentLastName(memberLineVO.getLastName());
-					apartmentVO.setPresedentFirstName(memberLineVO.getFirstName());
-					apartmentVO.setPresedentLastName(memberLineVO.getLastName());
 					apartmentVO.setAprtmentName(memberLineVO.getApartmentName());
+					apartmentVO.setFirstName(memberLineVO.getFirstName());
+					apartmentVO.setLastName(memberLineVO.getLastName());
+					apartmentVO.setPresidentName(memberLineVO.getFirstName()+" "+memberLineVO.getLastName());
 					apartmentVO.setPlotNo(memberLineVO.getPlotNo());
 					apartmentVO.setRoadNo(memberLineVO.getRoadNo());
 					apartmentVO.setNoOfFamilies(memberLineVO.getNoOfFamilies());
@@ -193,7 +175,7 @@ public class MembersFeedFileProcessor implements FeedFileParser<MemberDetailsLin
 
 	@Override
 	public Map<String, Object> processFile() {
-		List<MemberDetailsLineVO> list = parse("C:\\SwamyAll\\git\\mwa_1\\src\\main\\resources\\feed\\members_list.csv");
+		List<MemberDetailsLineVO> list = parse("C:\\SwamyAll\\swamy\\Swamy1\\Mayurinagar\\11_CC Cameras\\Data\\memebrs_list_1.0.csv");
 		return updateDataInDB(list);
 	}
 	

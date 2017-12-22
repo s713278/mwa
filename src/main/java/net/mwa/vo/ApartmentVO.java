@@ -1,5 +1,6 @@
 package net.mwa.vo;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -10,22 +11,23 @@ import lombok.Data;
 @Entity
 @Table(name = "APARTMENT_DETAILS")
 @DiscriminatorValue("APARTMENT")
-public class ApartmentVO extends MemberDetailsVO {
+public class ApartmentVO extends UserDetailsVO {
 
 	private String aprtmentName;
 	
-	private String presedentFirstName;
+	@Column(name="PRESIDENT_NAME")
+	private String presidentName;
 	
-	private String presedentLastName;
-	
+	@Column(name="PRESEDENT_MOBILE_NO")
 	private String presedentMobileNo;
 	
-	private String secreteryFirstName;
+	@Column(name="SECRETERY_NAME")
+	private String secreteryName;
 	
-	private String secreteryLastName;
-	
+	@Column(name="SECRETERY_MOBILE_NO")
 	private String secreteryMobileNo;
 	
+	@Column(name="APARTMENTE_MAIL")
 	private String apartmentEmail;
 	
 }

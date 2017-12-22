@@ -30,8 +30,8 @@ import net.mwa.common.SearchMemberRequest;
 import net.mwa.common.SearchMemberResponse;
 import net.mwa.dao.MemberDao;
 import net.mwa.repository.RoleRepository;
-import net.mwa.vo.IndividualOwnerVO;
-import net.mwa.vo.MemberDetailsVO;
+import net.mwa.vo.IndependentHouseVO;
+import net.mwa.vo.UserDetailsVO;
 import net.mwa.vo.RoleVO;
 
 /**
@@ -64,13 +64,13 @@ public class MemberService implements UserDetailsService{
 	public APICommonResponse save(MemberRegRequest request) {
 		String mobileNo = request.getMobileNo();
 		MemberRegResponse response = new MemberRegResponse();
-		MemberDetailsVO momberDetails = memberRegDao.findByMobileNo(mobileNo);
+		UserDetailsVO momberDetails = memberRegDao.findByMobileNo(mobileNo);
 		boolean recordExisted = Boolean.FALSE;
 		if (momberDetails == null) {
-			MemberDetailsVO momberDetailsByPlotNo = memberRegDao.findByPlotNo(request.getPlotNo());
+			UserDetailsVO momberDetailsByPlotNo = memberRegDao.findByPlotNo(request.getPlotNo());
 			if (momberDetailsByPlotNo == null) {
 				if(CategoryTypes.INDEPENDENT_ID == request.getCategoryId()){
-					IndividualOwnerVO individualVO = new IndividualOwnerVO();
+					IndependentHouseVO individualVO = new IndependentHouseVO();
 					individualVO.setFirstName(request.getFirstName());
 					individualVO.setLastName(request.getLastName());
 					individualVO.setMiddleName(request.getMiddleName());
@@ -113,7 +113,7 @@ public class MemberService implements UserDetailsService{
 	 */
 	public APICommonResponse getMemberDetails(SearchMemberRequest request) {
 		String mobileNo =  request.getMobileNo();
-		MemberDetailsVO detailsVO = memberRegDao.findByMobileNo(mobileNo);
+		UserDetailsVO detailsVO = memberRegDao.findByMobileNo(mobileNo);
 		SearchMemberResponse response = new SearchMemberResponse();
 		if (detailsVO == null) {
 			response.setSuccess(Boolean.FALSE);
@@ -128,7 +128,7 @@ public class MemberService implements UserDetailsService{
 	}
 
 
-	public Iterable<MemberDetailsVO> listAllMemebrs() {
+	public Iterable<UserDetailsVO> listAllMemebrs() {
 		return memberRegDao.findAll();
 	}
 
@@ -137,7 +137,7 @@ public class MemberService implements UserDetailsService{
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String plotNo) throws UsernameNotFoundException {
-		MemberDetailsVO memberDetailsVO = memberRegDao.findByPlotNo(plotNo);
+		UserDetailsVO memberDetailsVO = memberRegDao.findByPlotNo(plotNo);
 		List<GrantedAuthority> authorities = getUserAuthority(memberDetailsVO.getRoles());
 		return buildUserForAuthentication(memberDetailsVO, authorities);
 	}
@@ -152,7 +152,7 @@ public class MemberService implements UserDetailsService{
 		return grantedAuthorities;
 	}
 
-	private UserDetails buildUserForAuthentication(MemberDetailsVO user, List<GrantedAuthority> authorities) {
+	private UserDetails buildUserForAuthentication(UserDetailsVO user, List<GrantedAuthority> authorities) {
 		return new org.springframework.security.core.userdetails.User(user.getPlotNo(), user.getPassword(), user.isActive(), true, true, true, authorities);
 	}
 }

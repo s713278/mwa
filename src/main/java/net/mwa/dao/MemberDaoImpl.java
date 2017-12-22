@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.mwa.repository.MemberRepository;
-import net.mwa.vo.MemberDetailsVO;
+import net.mwa.vo.UserDetailsVO;
 
 /**
  * @author skunta
@@ -24,38 +24,38 @@ public class MemberDaoImpl implements MemberDao{
 	@Autowired
 	private MemberRepository memberRepository;
 	
-	public MemberDetailsVO save(MemberDetailsVO info) {
-		MemberDetailsVO memberVO=	memberRepository.save(info);
+	public UserDetailsVO save(UserDetailsVO info) {
+		UserDetailsVO memberVO=	memberRepository.save(info);
 		logger.info("ID\t:"+memberVO.getId());
 		return memberVO;
 	}
 	
-	public Iterable<MemberDetailsVO> findAll(){
+	public Iterable<UserDetailsVO> findAll(){
 		return memberRepository.findAll();
 	}
 	
-	public MemberDetailsVO findAny(Long memberId){
-		MemberDetailsVO memberVO=	memberRepository.findOne(memberId);
+	public UserDetailsVO findAny(Long memberId){
+		UserDetailsVO memberVO=	memberRepository.findOne(memberId);
 		return memberVO;
 	}
 	
 	
 
-	public MemberDetailsVO  findByMobileNo(String mobileNo) {
+	public UserDetailsVO  findByMobileNo(String mobileNo) {
 		return memberRepository.findByMobileNo(mobileNo);
 	}
 
-	public MemberDetailsVO update(MemberDetailsVO info) {
+	public UserDetailsVO update(UserDetailsVO info) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<MemberDetailsVO> findByFirstAndLastName(String firstName, String lastName) {
+	public List<UserDetailsVO> findByFirstAndLastName(String firstName, String lastName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public MemberDetailsVO  findByPlotNo(String plotNo) {
+	public UserDetailsVO  findByPlotNo(String plotNo) {
 		return memberRepository.findByPlotNo(plotNo);
 	}
 	

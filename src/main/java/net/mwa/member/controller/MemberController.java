@@ -16,7 +16,7 @@ import net.mwa.common.APICommonResponse;
 import net.mwa.common.SearchMemberRequest;
 import net.mwa.common.SearchMemberResponse;
 import net.mwa.service.MemberService;
-import net.mwa.vo.MemberDetailsVO;
+import net.mwa.vo.UserDetailsVO;
 
 @Controller("api/v1/member")
 @Api(value="MemberController",description="Operations pertaining to memeber services")
@@ -44,7 +44,7 @@ public class MemberController {
 	}
 
 	@GetMapping(value = "/listAll")
-	public @ResponseBody Iterable<MemberDetailsVO> listAllMembers() {
+	public @ResponseBody Iterable<UserDetailsVO> listAllMembers() {
 		return memberService.listAllMemebrs();
 	}
 

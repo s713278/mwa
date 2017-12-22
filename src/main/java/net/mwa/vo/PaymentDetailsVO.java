@@ -68,6 +68,6 @@ public abstract class PaymentDetailsVO implements Serializable {
 	private FeeVO fee;
 	
 	@OneToOne
-	private MemberDetailsVO member;
+	private UserDetailsVO member;
 	
 }

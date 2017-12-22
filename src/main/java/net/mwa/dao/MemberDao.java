@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import net.mwa.vo.MemberDetailsVO;
+import net.mwa.vo.UserDetailsVO;
 
 /**
  * @author Mahi
@@ -16,17 +16,17 @@ import net.mwa.vo.MemberDetailsVO;
 @Repository
 public interface MemberDao {
 	
-	public MemberDetailsVO save(final MemberDetailsVO info);
+	public UserDetailsVO save(final UserDetailsVO info);
 	
-	public MemberDetailsVO update( final MemberDetailsVO info);
+	public UserDetailsVO update( final UserDetailsVO info);
 
-	public Iterable<MemberDetailsVO> findAll();
+	public Iterable<UserDetailsVO> findAll();
 
-	public MemberDetailsVO findAny(final Long memberId);
+	public UserDetailsVO findAny(final Long memberId);
 
-	public MemberDetailsVO  findByMobileNo(final String mobileNo);
+	public UserDetailsVO  findByMobileNo(final String mobileNo);
 	
-	public MemberDetailsVO  findByPlotNo(final String plotNo);
+	public UserDetailsVO  findByPlotNo(final String plotNo);
 	
-	public List<MemberDetailsVO> findByFirstAndLastName(final String firstName,final String lastName);
+	public List<UserDetailsVO> findByFirstAndLastName(final String firstName,final String lastName);
 }

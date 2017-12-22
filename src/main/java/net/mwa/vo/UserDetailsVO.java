@@ -37,7 +37,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Entity
-@Table(name = "MEMBER_DETAILS")
+@Table(name = "USER_DETAILS")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name="TYPE", discriminatorType=DiscriminatorType.STRING, length=20)
 @DiscriminatorOptions(force=true)
@@ -45,7 +45,7 @@ import lombok.Data;
 @JsonIgnoreProperties(value = {"createdDate", "lastUpdate"}, allowGetters = false)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @EntityListeners(AuditingEntityListener.class)
-public abstract class MemberDetailsVO {
+public abstract class UserDetailsVO {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
@@ -57,7 +57,6 @@ public abstract class MemberDetailsVO {
 	private String firstName;
 	
 	@Column(name="LAST_NAME")
-	@NotBlank
 	private String lastName;
 
 	@Column(name="MIDDLE_NAME")

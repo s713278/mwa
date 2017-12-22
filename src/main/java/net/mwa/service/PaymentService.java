@@ -18,7 +18,7 @@ import net.mwa.dao.PaymentDao;
 import net.mwa.vo.CashPaymentVO;
 import net.mwa.vo.CategoryVO;
 import net.mwa.vo.FeeVO;
-import net.mwa.vo.MemberDetailsVO;
+import net.mwa.vo.UserDetailsVO;
 import net.mwa.vo.PaymentDetailsVO;
 
 @Service
@@ -36,7 +36,7 @@ public class PaymentService {
 	public PaymentResponse payAmount(PaymentRequest paymentRequest) {
 		Long memberId = paymentRequest.getMemberId();
 		PaymentResponse response = new PaymentResponse();
-		MemberDetailsVO memberDetailsVO = memberRegDao.findAny(memberId);
+		UserDetailsVO memberDetailsVO = memberRegDao.findAny(memberId);
 		if (memberDetailsVO == null) {
 			response.setSuccess(Boolean.FALSE);
 			response.setUserMessage("Invalid member id");
@@ -114,7 +114,7 @@ public class PaymentService {
 
 	public PaymentDueResponse getPaymentDuesByMemberId(final Long memberId) {
 		PaymentDueResponse response = new PaymentDueResponse();
-		MemberDetailsVO memberDetailsVO = memberRegDao.findAny(memberId);
+		UserDetailsVO memberDetailsVO = memberRegDao.findAny(memberId);
 		if (memberDetailsVO == null) {
 			response.setSuccess(Boolean.FALSE);
 			return response;
@@ -193,7 +193,7 @@ public class PaymentService {
 	public PaymentHistoryResponse getPaymentsByMemberIdANDFeeId(PaymentHistoryRequest paymentRequest) {
 		Long memberId = paymentRequest.getMemberId();
 		PaymentHistoryResponse response = new PaymentHistoryResponse();
-		MemberDetailsVO memberDetailsVO = memberRegDao.findAny(memberId);
+		UserDetailsVO memberDetailsVO = memberRegDao.findAny(memberId);
 		if (memberDetailsVO == null) {
 			response.setSuccess(Boolean.FALSE);
 			response.setUserMessage("Invalid member id");
