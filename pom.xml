@@ -99,7 +99,7 @@
 		</dependency>
 		<!-- End : MySQL Dependency -->
 
-		<!--Start : Session management -->
+		<!--Start : Session management 
 		<dependency>
 			<groupId>org.springframework.session</groupId>
 			<artifactId>spring-session</artifactId>
@@ -108,7 +108,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
-		<!--End : Session management -->
+		End : Session management -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
