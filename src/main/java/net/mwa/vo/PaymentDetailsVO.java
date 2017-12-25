@@ -64,6 +64,9 @@ public abstract class PaymentDetailsVO implements Serializable {
 	@Column(name="RECEIPT_NO")
 	private String receiptNo;
 	
+	@Column(name="TYPE")
+	private String type;
+	
 	@OneToOne
 	private FeeVO fee;
 	
