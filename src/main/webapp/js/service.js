@@ -4,6 +4,7 @@ angular.module('myApp').factory('UserService', ['$http', '$q', function($http, $
  
     var REST_SERVICE_URI = '/listAll';
     var ALL_PAYMENTS_URI = '/allPayments';
+    var PAY_DUE_PAYMENT_URI = '/payDueAmout';
  
     var factory = {
         fetchAllUsers: fetchAllUsers,
@@ -45,8 +46,9 @@ angular.module('myApp').factory('UserService', ['$http', '$q', function($http, $
         return deferred.promise;
     }
     function createUser(user) {
+    	alert("request:"+user);
         var deferred = $q.defer();
-        $http.post(REST_SERVICE_URI, user)
+        $http.post(PAY_DUE_PAYMENT_URI, user)
             .then(
             function (response) {
                 deferred.resolve(response.data);

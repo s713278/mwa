@@ -2,11 +2,10 @@
  
 angular.module('myApp').controller('UserController', ['$scope', 'UserService', function($scope, UserService) {
     var self = this;
-    self.user={id:null,username:'',address:'',email:''};
-    self.users=[];
- 
-   /* self.submit = submit;
-    self.edit = edit;
+    self.submit = submit;
+    self.user={id:null,email:''};
+    self.users=[];    
+   /*self.edit = edit;
     self.remove = remove;
     self.reset = reset;
  */
@@ -38,6 +37,7 @@ angular.module('myApp').controller('UserController', ['$scope', 'UserService', f
     }
  
     function createUser(user){
+    	alert("request:"+user);
         UserService.createUser(user)
             .then(
             fetchAllUsers,
@@ -65,7 +65,7 @@ angular.module('myApp').controller('UserController', ['$scope', 'UserService', f
                 console.error('Error while deleting User');
             }
         );
-    }
+    }*/
  
     function submit() {
         if(self.user.id===null){
@@ -78,7 +78,7 @@ angular.module('myApp').controller('UserController', ['$scope', 'UserService', f
         reset();
     }
  
-    function edit(id){
+   /* function edit(id){
         console.log('id to be edited', id);
         for(var i = 0; i < self.users.length; i++){
             if(self.users[i].id === id) {

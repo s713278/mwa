@@ -12,21 +12,23 @@
           <div class="panel panel-default">
               <div class="panel-heading"><span class="lead">Member Payment</span></div>
               <div class="formcontainer">
-                  <form ng-submit="ctrl.submit()" name="myForm" class="form-horizontal">
+                  <form ng-submit="ctrl.submit()" name="myForm" class="form-horizontal" method="Post">
                       <input type="hidden" ng-model="ctrl.user.id" />
                       <div class="row">
                       	<div class="form-group col-md-12">
                               <label class="col-md-2 control-lable" for="address">Category</label>
                               <div class="col-md-7">
-                                 <input type="radio">Apartment</input><input type="radio">Independent</input><input type="radio">Commercial</input>
+                                 <input type="radio" ng-model="ctrl.user.categeyId" checked="checked" name="categeyId">Apartment</input>
+                                 <input type="radio" ng-model="ctrl.user.categeyId" name="categeyId">Independent</input>
+                                 <input type="radio" ng-model="ctrl.user.categeyId" name="categeyId">Commercial</input>
                               </div>
                           </div>
                       </div>
                       <div class="row">
                           <div class="form-group col-md-12">
-                              <label class="col-md-2 control-lable" for="uname">Plot</label>
+                              <label class="col-md-2 control-lable" for="memberId">Plot No</label>
                               <div class="col-md-7">
-                                  <input type="text" ng-model="ctrl.user.username" id="uname" class="username form-control input-sm" placeholder="Enter your name" required ng-minlength="3"/>
+                                  <input type="text" ng-model="ctrl.user.memberId" id="memberId" class="memberId form-control input-sm" placeholder="Enter your name" required ng-minlength="3"/>
                                   <div class="has-error" ng-show="myForm.$dirty">
                                       <span ng-show="myForm.uname.$error.required">This is a required field</span>
                                       <span ng-show="myForm.uname.$error.minlength">Minimum length required is 3</span>
@@ -39,16 +41,34 @@
                        
                       <div class="row">
                           <div class="form-group col-md-12">
-                              <label class="col-md-2 control-lable" for="address">Address</label>
+                              <label class="col-md-2 control-lable" for="feeId">Fee ID</label>
                               <div class="col-md-7">
-                                  <input type="text" ng-model="ctrl.user.address" id="address" class="form-control input-sm" placeholder="Enter your Address. [This field is validation free]"/>
+                                  <input type="text" ng-model="ctrl.user.feeId" id="feeId" class="form-control input-sm" placeholder="Enter your Address. [This field is validation free]"/>
                               </div>
                           </div>
                       </div>
- 
+ 					
+ 					 <div class="row">
+                          <div class="form-group col-md-12">
+                              <label class="col-md-2 control-lable" for="amount">Amount</label>
+                              <div class="col-md-7">
+                                  <input type="text" ng-model="ctrl.user.amount" id="amount" class="form-control input-sm" placeholder="Enter amount."/>
+                              </div>
+                          </div>
+                      </div>
+                      
+ 					 <div class="row">
+                          <div class="form-group col-md-12">
+                              <label class="col-md-2 control-lable" for="mobile">Mobile No</label>
+                              <div class="col-md-7">
+                                  <input type="text" ng-model="ctrl.user.mobile" id="mobile" class="form-control input-sm" placeholder="Enter your Address. [This field is validation free]"/>
+                              </div>
+                          </div>
+                      </div>
+                      
                       <div class="row">
                           <div class="form-group col-md-12">
-                              <label class="col-md-2 control-lable" for="email">Email</label>
+                              <label class="col-md-2 control-lable" for="email">Communication Email</label>
                               <div class="col-md-7">
                                   <input type="email" ng-model="ctrl.user.email" id="email" class="email form-control input-sm" placeholder="Enter your Email" required/>
                                   <div class="has-error" ng-show="myForm.$dirty">
@@ -70,11 +90,12 @@
           </div>
           <div class="panel panel-default">
                 <!-- Default panel contents -->
-              <div class="panel-heading"><span class="lead">CC Camera Fund Contribution List By Residents</span></div>
+              <div class="panel-heading"><span class="lead">CC Camera's fund list  &nbsp;  &nbsp; &nbsp;<input type="text" ng-model="searchFilter" placeholder="Enter MobileNo/Plot/Name"></span></div>
               <div class="tablecontainer">
                   <table class="table table-hover">
                       <thead>
                           <tr>
+                          	  <th>#SRNO</th>
                            	  <th>#PLOT</th>
                               <th>#NAME</th>                             
                               <th>#CATEGORY</th>
@@ -85,9 +106,16 @@
                           </tr>
                       </thead>
                       <tbody>
-                          <tr ng-repeat="u in ctrl.users | orderBy:u.paidAmount">
+                          <tr ng-repeat="u in ctrl.users |filter:searchFilter | orderBy:'paidAmount'">
+                          	  <td><span></span>{{ $index + 1 }}</span></span></td>
                           	  <td><span ng-bind="u.member.plotNo"></span></td>
-                          	  <td><span>{{u.member.firstName}}&nbsp;{{u.member.middleName}}&nbsp;{{u.member.lastName}}</span></td>
+                          	  
+                          	  <td ng-if="u.member.category.code == 'INDEPENDENT'">
+                          	  	<span>{{u.member.firstName}}&nbsp;{{u.member.middleName}}&nbsp;{{u.member.lastName}}</span>
+                          	  </td>
+                          	  <td ng-if="u.member.category.code == 'APARTMENT'">
+                          	  	<span>{{u.member.aprtmentName}}</span>
+                          	  </td>
                           	  <td><span ng-bind="u.member.category.code"></span></td>
                               <td><span ng-bind="u.receiptNo"></span></td>
                               <td><span ng-bind="u.paidAmount"></span></td>
