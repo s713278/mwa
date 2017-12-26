@@ -3,13 +3,13 @@
 <html>
   <head>  
     <title>Mayurinagar Welfare Association</title> 
-    	<link href="<c:url value='/css/bootstrap.min.css'/>" rel="stylesheet"></link>
+     <link href="<c:url value='/css/bootstrap.min.css'/>" rel="stylesheet"></link>
      <link href="<c:url value='/css/app.css' />" rel="stylesheet"></link>
      
   </head>
   <body ng-app="myApp" class="ng-cloak">
       <div class="generic-container" ng-controller="UserController as ctrl">
-          <div class="panel panel-default">
+          <!-- <div class="panel panel-default">
               <div class="panel-heading"><span class="lead">Member Payment</span></div>
               <div class="formcontainer">
                   <form ng-submit="ctrl.submit()" name="myForm" class="form-horizontal" method="Post">
@@ -88,7 +88,7 @@
                   </form>
               </div>
           </div>
-          <div class="panel panel-default">
+  -->         <div class="panel panel-default">
                 <!-- Default panel contents -->
               <div class="panel-heading"><span class="lead">CC Camera's fund list  &nbsp;  &nbsp; &nbsp;<input type="text" ng-model="searchFilter" placeholder="Enter MobileNo/Plot/Name"></span></div>
               <div class="tablecontainer">
@@ -115,6 +115,9 @@
                           	  </td>
                           	  <td ng-if="u.member.category.code == 'APARTMENT'">
                           	  	<span>{{u.member.aprtmentName}}</span>
+                          	  </td>
+                          	  <td ng-if="u.member.category.code == 'APARTMENT'">
+                          	  	<span>{{u.member.businessName}}</span>
                           	  </td>
                           	  <td><span ng-bind="u.member.category.code"></span></td>
                               <td><span ng-bind="u.receiptNo"></span></td>
