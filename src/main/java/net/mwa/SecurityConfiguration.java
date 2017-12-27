@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 import net.mwa.service.MemberService;
 
@@ -19,6 +19,9 @@ import net.mwa.service.MemberService;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
+	@Autowired
+    private AccessDeniedHandler accessDeniedHandler;
+	
 	@Autowired
 	private UserDetailsService userDetailsService;
 
@@ -29,32 +32,43 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.passwordEncoder(((MemberService)userDetailsService).getbCryptPasswordEncoder());
 	}
 
+	 // roles admin allow to access /admin/**
+    // roles user allow to access /user/**
+    // custom 403 access denied handler
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
-		http.
-			authorizeRequests()
-				.antMatchers("/**").permitAll()
-				.antMatchers("/webjars/**").permitAll()
-				.antMatchers("/registration").permitAll()
-				.antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
-				.authenticated().and().csrf().disable().formLogin()
-				.loginPage("/login").failureUrl("/login?error=true")
-				.defaultSuccessUrl("/admin/home")
-				.usernameParameter("email")
-				.passwordParameter("password")
-				.and().logout()
-				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.logoutSuccessUrl("/").and().exceptionHandling()
-				.accessDeniedPage("/access-denied");
+		http.csrf().disable()
+			.authorizeRequests()
+					.antMatchers("/**","/common/**","/user/**").permitAll()
+					.antMatchers("/admin").hasAnyRole("ADMIN")
+					.antMatchers("/user").hasAnyRole("USER")
+					.anyRequest().authenticated()
+					.and()
+				.formLogin()
+					.loginPage("/login")
+					.permitAll()
+					.and()
+				.logout()
+					.permitAll()
+					.and()
+					.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 	}
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 	    web
 	       .ignoring()
-	       .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
+	       .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**","/webjars/**");
 	}
+	
+	@Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+               .withUser("admin").password("password").roles("ADMIN")
+               .and()
+               .withUser("user").password("password").roles("USER");
+    }
 	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {

@@ -7,7 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>ADMIN PAGE</h1>
-
+<h1>ADMIN PAGE and it is secured page</h1>
 </body>
 </html>
