@@ -39,7 +39,7 @@ import net.mwa.vo.RoleVO;
  *
  */
 @Service("memberService")
-public class MemberService implements UserDetailsService{
+public class MemberService /*implements UserDetailsService*/{
 
 	@Autowired
 	private MemberDao memberRegDao;
@@ -134,8 +134,8 @@ public class MemberService implements UserDetailsService{
 
 
 	
-	@Override
-	@Transactional
+	//@Override
+	//@Transactional
 	public UserDetails loadUserByUsername(String plotNo) throws UsernameNotFoundException {
 		UserDetailsVO memberDetailsVO = memberRegDao.findByPlotNo(plotNo);
 		List<GrantedAuthority> authorities = getUserAuthority(memberDetailsVO.getRoles());

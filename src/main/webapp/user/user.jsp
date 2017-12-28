@@ -1,1 +1,2 @@
-<h1>This is usr page</h1>
+<h1>This is user page</h1>
+<a href="/logout">Logout</a>

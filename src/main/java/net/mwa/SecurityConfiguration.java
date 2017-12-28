@@ -8,11 +8,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
-
-import net.mwa.service.MemberService;
 
 @Configuration
 @EnableWebSecurity
@@ -22,7 +19,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
     private AccessDeniedHandler accessDeniedHandler;
 	
-	@Autowired
+/*	@Autowired
 	private UserDetailsService userDetailsService;
 
 	@Override
@@ -30,7 +27,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			throws Exception {
 		auth.userDetailsService(userDetailsService)
 			.passwordEncoder(((MemberService)userDetailsService).getbCryptPasswordEncoder());
-	}
+	}*/
 
 	 // roles admin allow to access /admin/**
     // roles user allow to access /user/**
@@ -40,9 +37,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		
 		http.csrf().disable()
 			.authorizeRequests()
-					.antMatchers("/**","/common/**","/user/**").permitAll()
-					.antMatchers("/admin").hasAnyRole("ADMIN")
-					.antMatchers("/user").hasAnyRole("USER")
+					.antMatchers("/").permitAll()
+					.antMatchers("/admin/**").hasAnyRole("ADMIN")
+					.antMatchers("/user/**").hasAnyRole("USER")
 					.anyRequest().authenticated()
 					.and()
 				.formLogin()
