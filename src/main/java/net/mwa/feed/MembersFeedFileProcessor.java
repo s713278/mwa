@@ -64,7 +64,7 @@ public class MembersFeedFileProcessor implements FeedFileParser<MemberDetailsLin
 						apartmentName = otherName;
 						memberVO.setCategoryId(2l);
 						memberVO.setApartmentName(apartmentName);
-					} else {
+					} else if (CategoryTypes.COMMERCIAL.equalsIgnoreCase(category.trim())) {
 						businesName = otherName;
 						memberVO.setCategoryId(3l);
 						memberVO.setBusinesName(businesName);
@@ -157,7 +157,7 @@ public class MembersFeedFileProcessor implements FeedFileParser<MemberDetailsLin
 					commercialVO.setFirstName(memberLineVO.getFirstName());
 					commercialVO.setLastName(memberLineVO.getLastName());
 					commercialVO.setBusinessName(memberLineVO.getFirstName());
-					categoryVO=new CategoryVO();
+					 categoryVO=new CategoryVO();
 					categoryVO.setId(memberLineVO.getCategoryId());
 					commercialVO.setCategory(categoryVO);
 					commercialVO.setPlotNo(memberLineVO.getPlotNo());

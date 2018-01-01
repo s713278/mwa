@@ -3,6 +3,7 @@ package net.mwa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -37,7 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		
 		http.csrf().disable()
 			.authorizeRequests()
-					.antMatchers("/").permitAll()
+					.antMatchers("/","/allPayments").permitAll()
 					.antMatchers("/admin/**").hasAnyRole("ADMIN")
 					.antMatchers("/user/**").hasAnyRole("USER")
 					.anyRequest().authenticated()
@@ -57,6 +58,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	    web
 	       .ignoring()
 	       .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**","/webjars/**");
+	       /*.antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**","/webjars/**","/v2/api-docs/**","/swagger.json","/swagger-ui.html");*/
 	}
 	
 	@Autowired

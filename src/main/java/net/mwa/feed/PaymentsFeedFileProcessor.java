@@ -33,7 +33,7 @@ import net.mwa.vo.PaymentDetailsVO;
 @Qualifier("PaymentsFeedFileProcessor")
 public class PaymentsFeedFileProcessor implements FeedFileParser<PaymentLineVO> {
 
-	private static final String DATE_FORMAT = "yyyy-MMM-dd";
+	private static final String DATE_FORMAT = "dd-MMM-y";
 
 	private static final Logger LOGGER = Logger.getLogger(PaymentsFeedFileProcessor.class.getName());
 

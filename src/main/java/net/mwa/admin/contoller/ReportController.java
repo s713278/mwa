@@ -1,5 +1,7 @@
 package net.mwa.admin.contoller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,11 +18,13 @@ import net.mwa.service.PaymentService;
 import net.mwa.vo.PaymentDetailsVO;
 
 @RestController("api/v1/reports")
-@Api(value="ReportController",description="Operations pertaining to MWA reports")
+@Api(value="ReportController")
 public class ReportController {
 
 	@Autowired
 	private PaymentService paymentService;
+	
+	private static Logger LOGGER = LoggerFactory.getLogger(ReportController.class);
 	
 	@ApiOperation(value = "Gets payment history by the member id.")
 	@PostMapping(value = "/paymentsByMemberId/{membId}")
@@ -36,15 +40,22 @@ public class ReportController {
 		return response;
 	}
 	
-	@ApiOperation(value = "Gets all payment made by the members.")
+	@ApiOperation(value = "Gets all payment made by the residents.")
 	@GetMapping(value = "/allPayments")
 	public @ResponseBody Iterable<PaymentDetailsVO> listAllPayments() {
-		return paymentService.listAllPayments();
+		Iterable<PaymentDetailsVO> list = paymentService.listAllPayments();
+		if(LOGGER.isInfoEnabled()){
+			LOGGER.info("In side listAllPayments() ");
+		}
+		return list;
 	}
 	
 	@ApiOperation(value = "Gets all payment based on memberId and feeId.")
 	@PostMapping(value = "/paymentsByMemberIdANDFeeId")
 	public @ResponseBody PaymentHistoryResponse paymentsByMemberIdANDFeeId(final PaymentHistoryRequest historyRequest) {
+		if(LOGGER.isInfoEnabled()){
+			LOGGER.info("In side paymentsByMemberIdANDFeeId() ");
+		}
 		return paymentService.getPaymentsByMemberIdANDFeeId(historyRequest);
 	}
 }

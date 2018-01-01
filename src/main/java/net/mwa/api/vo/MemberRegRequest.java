@@ -36,10 +36,23 @@ public class MemberRegRequest extends APICommonRequest{
 	@ApiModelProperty(name="roadNo",example="Road No-27F",position=7)
 	private String roadNo;
 
-	private String password;
+	private String password="Mwa!7890";
 
 	private short active = 1;
 
 	private long categoryId;
+	
+	@ApiModelProperty(name="apartmentName",example="Ananda nilayam",position=8)
+	private String apartmentName;
+	
+	@ApiModelProperty(name="businessName",example="Jai Bhavani General Stores",position=9)
+	private String businessName;
 
+	@Override
+	public String toString() {
+		return "MemberRegRequest [plotNo=" + plotNo + ", mobileNo=" + mobileNo + ", noOfFamilies=" + noOfFamilies
+				+ ", categoryId=" + categoryId + "]";
+	}
+
+	
 }

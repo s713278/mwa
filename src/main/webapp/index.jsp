@@ -90,40 +90,50 @@
           </div>
   -->         <div class="panel panel-default">
                 <!-- Default panel contents -->
-              <div class="panel-heading"><span class="lead">CC Camera's fund list  &nbsp;  &nbsp; &nbsp;<input type="text" ng-model="searchFilter" placeholder="Enter MobileNo/Plot/Name"></span></div>
+              <div class="panel-heading"><span class="lead">CC Camera's fund list  &nbsp;  &nbsp; &nbsp;<input type="text" ng-model="searchFilter" placeholder="Enter MobileNo/Plot/Name" size="40"></span></div>
               <div class="tablecontainer">
                   <table class="table table-hover">
                       <thead>
                           <tr>
                           	  <th>#SRNO</th>
+                          	  <th>#PAIDDATE</th>
                            	  <th>#PLOT</th>
                               <th>#NAME</th>                             
                               <th>#CATEGORY</th>
                               <th>#RECEIPT</th>
                               <th>#AMOUNT</th>
                             <!--   <th>#BALANCE</th> -->
-                              <th>#MODE</th>
+                              <!-- <th>#MODE</th> -->
                           </tr>
                       </thead>
                       <tbody>
-                          <tr ng-repeat="u in ctrl.users |filter:searchFilter | orderBy:'paidAmount'">
-                          	  <td><span></span>{{ $index + 1 }}</span></span></td>
+                          <tr ng-repeat="u in ctrl.users | filter:searchFilter | orderBy:'paidAmount'">
+                          	  <td><span>{{ $index + 1 }}</span></td>
+                          	  <td><span>{{u.paidDate | date : "dd-MMM-y"}}</span></td>
                           	  <td><span ng-bind="u.member.plotNo"></span></td>
-                          	  
                           	  <td ng-if="u.member.category.code == 'INDEPENDENT'">
                           	  	<span>{{u.member.firstName}}&nbsp;{{u.member.middleName}}&nbsp;{{u.member.lastName}}</span>
                           	  </td>
                           	  <td ng-if="u.member.category.code == 'APARTMENT'">
                           	  	<span>{{u.member.aprtmentName}}</span>
                           	  </td>
-                          	  <td ng-if="u.member.category.code == 'APARTMENT'">
+                          	  <td ng-if="u.member.category.code == 'COMMERCIAL'">
                           	  	<span>{{u.member.businessName}}</span>
                           	  </td>
-                          	  <td><span ng-bind="u.member.category.code"></span></td>
+                          	  
+                          	  <td ng-if="u.member.category.code == 'INDEPENDENT'">
+                          	  	<span>{{u.member.category.code}}</span>
+                          	  </td>
+                          	  <td ng-if="u.member.category.code == 'APARTMENT'">
+                          	  	<span>{{u.member.category.code}}</span>
+                          	  </td>
+                          	  <td ng-if="u.member.category.code == 'COMMERCIAL'">
+                          	  	<span>DONATION</span>
+                          	  </td>
                               <td><span ng-bind="u.receiptNo"></span></td>
                               <td><span ng-bind="u.paidAmount"></span></td>
                               <!-- <td><span ng-bind="u.paidAmount"></span></td> -->
-                              <td><span ng-bind="u.type"></span></td>
+                             <!--  <td><span ng-bind="u.type"></span></td> -->
                              <!--  <td>
                               <button type="button" ng-click="ctrl.edit(u.id)" class="btn btn-success custom-width">Edit</button>  <button type="button" ng-click="ctrl.remove(u.id)" class="btn btn-danger custom-width">Remove</button>
                               </td> -->

@@ -13,4 +13,16 @@ public class Constants {
 		
 		
 	}
+	
+	
+	public static enum Roles{
+		ADMIN("ADMIN"),
+		MEMBER("MEMBER");
+		
+		private String  role ;
+		Roles(String s){
+			role = s;
+		}
+		
+	}
 }

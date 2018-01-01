@@ -4,9 +4,15 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jdt.core.compiler.InvalidInputException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.mwa.common.AddOfflinePaymentRequest;
+import net.mwa.common.AddOfflinePaymentResponse;
+import net.mwa.common.ErrorCodes;
 import net.mwa.common.PaymentDueResponse;
 import net.mwa.common.PaymentHistoryRequest;
 import net.mwa.common.PaymentHistoryResponse;
@@ -18,12 +24,14 @@ import net.mwa.dao.PaymentDao;
 import net.mwa.vo.CashPaymentVO;
 import net.mwa.vo.CategoryVO;
 import net.mwa.vo.FeeVO;
-import net.mwa.vo.UserDetailsVO;
 import net.mwa.vo.PaymentDetailsVO;
+import net.mwa.vo.UserDetailsVO;
 
 @Service
 public class PaymentService {
 
+	private static Logger LOGGER = LoggerFactory.getLogger(PaymentService.class);
+	
 	@Autowired
 	private MemberDao memberRegDao;
 
@@ -32,6 +40,17 @@ public class PaymentService {
 
 	@Autowired
 	private PaymentDao paymentDao;
+	
+	@Autowired
+	MemberServiceHelper memberServiceHelper;
+	
+	public MemberServiceHelper getMemberServiceHelper() {
+		return memberServiceHelper;
+	}
+
+	public void setMemberServiceHelper(MemberServiceHelper memberServiceHelper) {
+		this.memberServiceHelper = memberServiceHelper;
+	}
 
 	public PaymentResponse payAmount(PaymentRequest paymentRequest) {
 		Long memberId = paymentRequest.getMemberId();
@@ -48,7 +67,7 @@ public class PaymentService {
 		if (feeId == null || actualFeeVO == null) {
 			response.setSuccess(Boolean.FALSE);
 			response.setUserMessage("Invalid fee id");
-			response.setDeveloperMessage("No member fee details found with # " + feeId);
+			response.setDeveloperMessage("No fee details found for the id # " + feeId);
 			return response;
 		}
 		double enteredAmount = paymentRequest.getAmount();
@@ -59,7 +78,7 @@ public class PaymentService {
 			return response;
 		}
 
-		// If any payments already made by member
+		// If payment is already made by member
 		List<PaymentDetailsVO> payments = paymentDao.findByFeeIdAndMemberId(feeId, memberId);
 		double paidAmount = 0;
 		if (payments != null && payments.size() > 0) {
@@ -86,15 +105,6 @@ public class PaymentService {
 			response.setDeveloperMessage(developerMessage);
 			return response;
 		}
-		/*
-		 * if (enteredAmount < dueAmount) { response.setSuccess(Boolean.FALSE);
-		 * response.setUserMessage(enteredAmount +
-		 * " is not matching with due amount :" + dueAmount +
-		 * ". Please correct it and try again");
-		 * response.setDeveloperMessage(enteredAmount +
-		 * " is not matching with due amount :" + dueAmount +
-		 * ". Please correct it and try again"); return response; }
-		 */
 		CashPaymentVO detailsVO = new CashPaymentVO();
 		detailsVO.setPaidAmount(enteredAmount);
 		detailsVO.setMember(memberDetailsVO);
@@ -109,7 +119,11 @@ public class PaymentService {
 	}
 
 	public Iterable<PaymentDetailsVO> listAllPayments() {
-		return paymentDao.findAll();
+		Iterable<PaymentDetailsVO> ll = paymentDao.findAll();
+		if(LOGGER.isInfoEnabled()){
+			LOGGER.info("Inside listAllPayments() : ");
+		}
+		return ll;
 	}
 
 	public PaymentDueResponse getPaymentDuesByMemberId(final Long memberId) {
@@ -232,4 +246,50 @@ public class PaymentService {
 		return response;
 	}
 
+	
+	public AddOfflinePaymentResponse addOffLinePayment(AddOfflinePaymentRequest request){
+		if(LOGGER.isDebugEnabled()){
+			LOGGER.debug("Request : "+request);
+		}
+		UserDetailsVO userDetails = null;
+		AddOfflinePaymentResponse response = new AddOfflinePaymentResponse();
+		try {
+			userDetails = getMemberServiceHelper().findORCreateMember(request);
+			if(userDetails ==null || userDetails.getId() == null){
+				response.setSuccess(Boolean.FALSE);
+				response.setUserMessage("Invalid UserDetails");
+				response.setDeveloperMessage("UserDetailsVO is not persisted in data base");
+				return response;
+			}
+			Long feeId = request.getFeeId();
+			FeeVO actualFeeVO = feeDao.findAny(feeId);
+			if (feeId == null || actualFeeVO == null) {
+				response.setSuccess(Boolean.FALSE);
+				response.setUserMessage("Invalid fee id");
+				response.setDeveloperMessage("No fee details found for the id # " + feeId);
+				return response;
+			}
+			double paidAmount = request.getAmount();
+			if (paidAmount <= 0) {
+				response.setSuccess(Boolean.FALSE);
+				response.setErrorCode(ErrorCodes.INVALID_INPUT_REQUEST);
+				response.setUserMessage("Minimum amount should be Rs 10");
+				response.setDeveloperMessage("Invalid amount is entered and entered amount is  " + paidAmount);
+				return response;
+			}
+			Long transactionId = getMemberServiceHelper().addPayment(request,userDetails,actualFeeVO);
+			response.setSuccess(Boolean.TRUE);
+			response.setOnlineReferenceId(transactionId);
+		} catch (InvalidInputException e) {
+			response.setSuccess(Boolean.FALSE);
+			response.setErrorCode(ErrorCodes.INVALID_INPUT_REQUEST);
+			response.setDeveloperMessage("Seems AddOfflinePaymentRequest is null or required params are empty.");
+		}finally {
+			if(LOGGER.isDebugEnabled()){
+				LOGGER.debug("Response : "+response);
+			}
+		}
+			
+		return response;
+	}
 }

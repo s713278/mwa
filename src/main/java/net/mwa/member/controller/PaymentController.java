@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.mwa.common.APICommonResponse;
+import net.mwa.common.AddOfflinePaymentRequest;
+import net.mwa.common.AddOfflinePaymentResponse;
 import net.mwa.common.PaymentDueResponse;
 import net.mwa.common.PaymentRequest;
 import net.mwa.common.PaymentResponse;
@@ -44,7 +46,15 @@ public class PaymentController {
 		return response;
 	}
 	
-	
+	@ApiOperation(value = "Add offline payment",
+    notes = "PlotNo,FeeId,Amount,MobileNo,Email,Category and PaymentMode needs to be passed",
+    response = AddOfflinePaymentResponse.class,
+    responseContainer = "AddOfflinePaymentResponse")
+	@PostMapping(value = "/addOffLinePayment")
+	public @ResponseBody APICommonResponse addOffLinePayment(@RequestBody AddOfflinePaymentRequest request) {
+		AddOfflinePaymentResponse response = (AddOfflinePaymentResponse) paymentService.addOffLinePayment(request);
+		return response;
+	}
 	
 	
 }

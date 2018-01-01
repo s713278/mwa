@@ -4,9 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>net.mwa</groupId>
-	<artifactId>mwa</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<artifactId>ROOT</artifactId>
 
 	<name>mwa</name>
 	<description>Online platform for Mayurinagar Colony</description>
@@ -97,10 +95,10 @@
 			<artifactId>spring-boot-starter-data-redis</artifactId> </dependency> End 
 			: Session management -->
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -128,4 +126,5 @@
 	</build>
 
 
+	<packaging>war</packaging>
 </project>

@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.swagger.annotations.Api;
+import net.mwa.common.AddOfflinePaymentRequest;
 import net.mwa.feed.FeedFileParser;
 import net.mwa.feed.MemberDetailsLineVO;
 import net.mwa.feed.PaymentLineVO;
 
 @Controller("api/v1/feed")
 
-@Api(value="FileProcessorControler" ,description ="CSV/XLS file processing")
+@Api(value="FileProcessorControler")
 public class FileProcessorControler {
 
 	private static final Logger logger = Logger.getLogger(FileProcessorControler.class.getName());
@@ -28,6 +29,10 @@ public class FileProcessorControler {
 	@Qualifier("PaymentsFeedFileProcessor")
 	private FeedFileParser<PaymentLineVO> paymentsFeedFileProcessor ; 
 	
+	@Autowired
+	@Qualifier("MWADataFeedProcessor")
+	private FeedFileParser<AddOfflinePaymentRequest> dataFeedProcessor;
+	
 	@PutMapping("/processMembersDetails")
 	public @ResponseBody Object processMembersDetailsFile(){
 		return membersFeedFileProcessor.processFile();
@@ -36,5 +41,10 @@ public class FileProcessorControler {
 	@PutMapping("/processPaymentDetails")
 	public @ResponseBody Object processPaymentDetailsFile(){
 		return paymentsFeedFileProcessor.processFile();
+	}
+	
+	@PutMapping("/processDataFeedFile")
+	public @ResponseBody Object processDataFeedFile(){
+		return dataFeedProcessor.processFile();
 	}
 }

@@ -19,6 +19,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -49,6 +50,7 @@ public abstract class UserDetailsVO {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
+//	@TableGenerator(name = "table", allocationSize = 10000)
 	private Long id;
 	
 	
@@ -92,7 +94,7 @@ public abstract class UserDetailsVO {
 	private boolean active=false;
 			
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
 	private Set<RoleVO> roles;
 	
 	@OneToOne

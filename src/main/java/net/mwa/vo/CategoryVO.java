@@ -50,5 +50,14 @@ public class CategoryVO {
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date lastUpdate;
+
+	public CategoryVO(Long id) {
+		super();
+		this.id = id;
+	}
+
+	public CategoryVO() {
+	}
+
 	
 }

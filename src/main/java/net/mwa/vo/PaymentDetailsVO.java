@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -44,6 +45,7 @@ public abstract class PaymentDetailsVO implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.TABLE)
+//	@TableGenerator(name = "table", allocationSize = 10000)
 	private Long id;
 	
 	@Column(name="PAID_AMOUNT")
@@ -51,10 +53,14 @@ public abstract class PaymentDetailsVO implements Serializable {
 	
 	private String note;
 	
+	@Column(name="PAID_DATE",nullable = false, updatable = false)
+    private Date paidDate;
+	
+	
 	@Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-    private Date paidDate;
+    private Date createdDate;
 	
 	@Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -64,6 +70,7 @@ public abstract class PaymentDetailsVO implements Serializable {
 	@Column(name="RECEIPT_NO")
 	private String receiptNo;
 	
+	@Transient
 	@Column(name="TYPE")
 	private String type;
 	

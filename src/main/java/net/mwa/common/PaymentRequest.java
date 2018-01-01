@@ -26,4 +26,6 @@ public class PaymentRequest extends APICommonRequest{
 	
 	@ApiModelProperty(name="mobileNo" ,example="9912149080")
 	private String mobileNo;
+	
+	private String modeOfPayment;
 }
