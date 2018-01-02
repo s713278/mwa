@@ -24,7 +24,7 @@ import net.mwa.common.MemberShipType;
 
 @Data
 @Entity
-@Table(name="CATEGORY_DETAILS")
+@Table(name="category_details")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdDate", "lastUpdate"}, allowGetters = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)

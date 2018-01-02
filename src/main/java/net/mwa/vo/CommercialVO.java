@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "COMMERCIAL_DETAILS")
+@Table(name = "commercial_details")
 @DiscriminatorValue("COMMERCIAL")
 public class CommercialVO extends UserDetailsVO {
 

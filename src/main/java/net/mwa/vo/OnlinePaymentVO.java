@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "ONLINE_PAYMENT_DETAILS")
+@Table(name = "online_payment_details")
 @DiscriminatorValue("ONLINE")
 public class OnlinePaymentVO extends PaymentDetailsVO {
 

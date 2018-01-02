@@ -15,7 +15,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "INDEPENDENT_DETAILS")
+@Table(name = "independent_details")
 @DiscriminatorValue("INDEPENDENT")
 @DiscriminatorOptions(force=true)
 @JsonInclude(JsonInclude.Include.NON_NULL)

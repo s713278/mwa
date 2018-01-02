@@ -25,7 +25,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="FEE_DETAILS")
+@Table(name="fee_details")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdDate", "lastUpdate"}, allowGetters = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)

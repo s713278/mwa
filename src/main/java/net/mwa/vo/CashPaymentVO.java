@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "CASH_PAYMENT_DETAILS")
+@Table(name = "cash_payment_details")
 @DiscriminatorValue("CASH")
 public class CashPaymentVO extends PaymentDetailsVO {
 

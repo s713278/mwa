@@ -19,7 +19,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -38,7 +37,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Entity
-@Table(name = "USER_DETAILS")
+@Table(name = "user_details")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name="TYPE", discriminatorType=DiscriminatorType.STRING, length=20)
 @DiscriminatorOptions(force=true)
@@ -94,7 +93,7 @@ public abstract class UserDetailsVO {
 	private boolean active=false;
 			
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<RoleVO> roles;
 	
 	@OneToOne

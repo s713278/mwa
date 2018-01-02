@@ -30,7 +30,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="PAYMENT_DETAILS")
+@Table(name="payment_details")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"paidDate", "lastUpdate"}, allowGetters = true)
 @Inheritance(strategy = InheritanceType.JOINED)

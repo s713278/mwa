@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "CHEQUE_PAYMENT_DETAILS")
+@Table(name = "cheque_payment_details")
 @DiscriminatorValue("CHEQUE")
 public class ChequePaymentVO extends PaymentDetailsVO {
 
