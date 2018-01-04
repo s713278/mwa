@@ -88,7 +88,7 @@ angular.module('myApp').controller('UserController', ['$scope', 'UserService', f
         }
     }
  
-    function remove(id){
+    function remove(id){users
         console.log('id to be deleted', id);
         if(self.user.id === id) {//clean form if the user to be deleted is shown there.
             reset();
@@ -103,3 +103,23 @@ angular.module('myApp').controller('UserController', ['$scope', 'UserService', f
     }
  */
 }]);
+
+angular.module('myApp').controller('ReportController', ['$scope', 'ReportService', function($scope, ReportService) {
+	var self = this;
+	self.data=[];
+	fetchAllRoads();
+	function fetchAllRoads(){
+		//alert("ReportController #1");
+		ReportService.fetchAllRoads()
+            .then(
+            function(d) {
+            	//alert("ReportController" + d);
+                self.data = d;
+            },
+            function(errResponse){
+                console.error('Error while fetching allRoads data');
+            }
+        );
+    }
+}]);
+

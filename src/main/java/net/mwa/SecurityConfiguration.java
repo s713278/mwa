@@ -3,7 +3,6 @@ package net.mwa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -35,10 +34,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     // custom 403 access denied handler
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		
 		http.csrf().disable()
 			.authorizeRequests()
-					.antMatchers("/","/allPayments").permitAll()
+					.antMatchers("/**","/allPayments/**","/favicon.ico").permitAll()
 					.antMatchers("/admin/**").hasAnyRole("ADMIN")
 					.antMatchers("/user/**").hasAnyRole("USER")
 					.anyRequest().authenticated()

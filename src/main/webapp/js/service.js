@@ -93,3 +93,29 @@ angular.module('myApp').factory('UserService', ['$http', '$q', function($http, $
     }
  */
 }]);
+
+
+angular.module('myApp').factory('ReportService', ['$http', '$q', function($http, $q){
+
+	var ALL_ROADS_URI = '/getAllRoads';
+    var factory = {
+    	fetchAllRoads: fetchAllRoads
+    };
+    return factory;
+ 
+    function fetchAllRoads() {
+        var deferred = $q.defer();
+        $http.get(ALL_ROADS_URI)
+            .then(
+            function (response) {
+            	//alert("ReportService" + response);
+                deferred.resolve(response.data);
+            },
+            function(errResponse){
+                console.error('Error while fetching roads');
+                deferred.reject(errResponse);
+            }
+        );
+        return deferred.promise;
+    }
+}]);

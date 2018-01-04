@@ -5,8 +5,8 @@
     <title>Mayurinagar Welfare Association</title> 
      <link href="<c:url value='/css/bootstrap.min.css'/>" rel="stylesheet"></link>
      <link href="<c:url value='/css/app.css' />" rel="stylesheet"></link>
-     
   </head>
+  <jsp:include page="/common/header.jsp"></jsp:include>
   <body ng-app="myApp" class="ng-cloak">
       <div class="generic-container" ng-controller="UserController as ctrl">
           <!-- <div class="panel panel-default">

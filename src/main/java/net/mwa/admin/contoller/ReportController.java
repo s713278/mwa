@@ -1,5 +1,8 @@
 package net.mwa.admin.contoller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +17,10 @@ import io.swagger.annotations.ApiOperation;
 import net.mwa.common.APICommonResponse;
 import net.mwa.common.PaymentHistoryRequest;
 import net.mwa.common.PaymentHistoryResponse;
+import net.mwa.repository.RoadRepository;
 import net.mwa.service.PaymentService;
 import net.mwa.vo.PaymentDetailsVO;
+import net.mwa.vo.RoadDetailsVO;
 
 @RestController("api/v1/reports")
 @Api(value="ReportController")
@@ -58,4 +63,18 @@ public class ReportController {
 		}
 		return paymentService.getPaymentsByMemberIdANDFeeId(historyRequest);
 	}
+	
+	@Autowired
+	private RoadRepository roadRepository;
+	
+	@GetMapping(value = "/getAllRoads")
+	public List<RoadDetailsVO> getAllRoads(){
+		Iterable<RoadDetailsVO> ite = roadRepository.findAll();
+		List<RoadDetailsVO> myList = new ArrayList<RoadDetailsVO>();
+		ite.forEach(myList::add);
+		System.out.println("myList : "+myList);
+		return myList;
+	}
+	
+	
 }

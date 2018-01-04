@@ -1,8 +1,13 @@
 package net.mwa.admin.contoller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import net.mwa.vo.RoadDetailsVO;
 
 @Controller
 public class HomeController {
@@ -12,6 +17,13 @@ public class HomeController {
 		System.out.println("Home page loaded");
 		return "index";
 	}
+	
+	@GetMapping(value = "/allRoads")
+	public String getAllRoads(){
+		System.out.println("getAllRoads page loaded");
+		return "allRoads";
+	}
+	
 	
 	@GetMapping(value="/admin")
 	public String getAdmin(){
